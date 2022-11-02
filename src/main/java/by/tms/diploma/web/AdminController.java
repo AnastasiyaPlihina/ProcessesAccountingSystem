@@ -1,6 +1,7 @@
 package by.tms.diploma.web;
 
 import by.tms.diploma.entity.Admin;
+import by.tms.diploma.entity.Department;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,26 @@ public class AdminController {
             return "admin/authorisation";
         }
         httpSession.setAttribute("currentAdmin", admin);
+        return "redirect:/admin/personalAccount";
+    }
+
+    @GetMapping("/personalAccount")
+    public String personalAccount() {
+        return "admin/personalAccount";
+    }
+
+    @GetMapping("/addDepartment")
+    public String addDepartment(@ModelAttribute("newDepartment") Department department) {
+
+        return "admin/addDepartment";
+    }
+
+    @PostMapping("/addDepartment")
+    public String addTeacher(@Valid @ModelAttribute("newDepartment") Department department,
+                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/addDepartment";        }
+
         return "redirect:/admin/personalAccount";
     }
 }
