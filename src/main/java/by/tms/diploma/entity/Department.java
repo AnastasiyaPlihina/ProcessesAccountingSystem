@@ -1,10 +1,14 @@
 package by.tms.diploma.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import java.util.List;
-
+@Entity
 public class Department extends AbstractEntity {
 private String name;
+@OneToMany
 private List<User> employees;
+@OneToMany
 private List<Equipment> equipmentList;
 
     public Department() {

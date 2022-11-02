@@ -1,10 +1,16 @@
 package by.tms.diploma.entity;
 
+import javax.persistence.Entity;
+
+@Entity
 public class User extends AbstractEntity {
 private String firstName;
 private String secondName;
 private String password;
 private Role role;
+
+    public User() {
+    }
 
     public User(String firstName, String secondName, String password, Role role) {
         this.firstName = firstName;

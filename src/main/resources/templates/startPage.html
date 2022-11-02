@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Start page</title>
@@ -10,12 +10,25 @@
 <div class="container">
     <div class="row mt-5">
         <div class="col">
-            <p>Enter in system as...</p>
+            <p>Choose equipment to show information:</p>
             <form>
                 <select class="form-select" aria-label="Default select example">
-                    <option selected>Admin</option>
-                    <option value="1">Head of department</option>
-                    <option value="2">Worker</option>
+                    <option th:each="eguipmentOpt : ${eguipmentList}"
+                            th:value="${eguipmentOpt.id}" th:text="${eguipmentOpt.internalCode}">
+                    </option>
+                </select>
+                <button class="btn btn-primary mt-3">Continue</button>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col">
+            <p>Enter in system as...</p>
+            <form th:action="@{/authorisation}" method="post">
+                <select class="form-select" name="userRole" aria-label="Default select example">
+                    <option value="admin" selected>Admin</option>
+                    <option value="head">Head of department</option>
+                    <option value="worker">Worker</option>
                 </select>
                 <button class="btn btn-primary mt-3">Continue</button>
             </form>

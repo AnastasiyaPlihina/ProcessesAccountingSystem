@@ -1,16 +1,21 @@
 package by.tms.diploma.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
-
+@Entity
 public class Equipment extends AbstractEntity {
     private String name;
     private String internalCode;
     private String inventoryNumber;
     private String technicalCharacteristic;
+    @ManyToOne
     private Department department;
     private LocalDate lastQualificationDate;
     private LocalDate lastMaintenanceServiceDate;
 
+    public Equipment() {
+    }
 
     public Equipment(String name, String internalCode, String inventoryNumber, String technicalCharacteristic, Department department, LocalDate lastQualificationDate,
                      LocalDate lastMaintenanceServiceDate) {
