@@ -17,24 +17,32 @@
             <form th:action="@{/admin/addEmployee}" th:object="${newUser}" method="post">
                 <div class="mb-3">
                     <label for="userFirstName" class="form-label">Employee's first name: </label>
-                    <input type="text" th:field="*{firstName}" placeholder="Employee's first name" class="form-control" id="userFirstName"/>
+                    <input type="text" th:field="*{firstName}" placeholder="Employee's first name" class="form-control"
+                           id="userFirstName"/>
                 </div>
                 <div class="mb-3">
                     <label for="userSecondName" class="form-label">Employee's second name: </label>
-                    <input type="text" th:field="*{secondName}" placeholder="Employee's second name" class="form-control" id="userSecondName"/>
+                    <input type="text" th:field="*{secondName}" placeholder="Employee's second name"
+                           class="form-control" id="userSecondName"/>
                 </div>
-
                 <div class="mb-3">
-                    <select name="department.id">
+                    <label for="departmentSelect">Select employee's department: </label>
+                    <select class="form-select" name="department.id" id="departmentSelect">
                         <option th:each="departmentOpt : ${departments}"
                                 th:value="${departmentOpt.id}" th:text="${departmentOpt.name}"></option>
                     </select>
                 </div>
-
-
                 <div class="mb-3">
                     <label for="userPassword" class="form-label">Employee's password: </label>
-                    <input type="text" th:field="*{password}" placeholder="Employee's password" class="form-control" id="userPassword"/>
+                    <input type="text" th:field="*{password}" placeholder="Employee's password" class="form-control"
+                           id="userPassword"/>
+                </div>
+                <div class="mb-3">
+                    <label for="roleSelect">Select employee's role: </label>
+                    <select class="form-select" id="roleSelect" th:field="*{role}">
+                        <option th:value="${T(by.tms.diploma.entity.Role).WORKER}">Worker</option>
+                        <option th:value="${T(by.tms.diploma.entity.Role).HEAD_OF_DEPARTMENT}">Head of department</option>
+                    </select>
                 </div>
                 <button class="btn btn-primary">Add employee</button>
             </form>

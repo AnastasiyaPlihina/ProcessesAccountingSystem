@@ -15,10 +15,11 @@ private Role role;
     public User() {
     }
 
-    public User(String firstName, String secondName, String password, Role role) {
+    public User(String firstName, String secondName, String password, Department department, Role role) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.password = password;
+        this.department = department;
         this.role = role;
     }
 
@@ -44,6 +45,14 @@ private Role role;
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     public Role getRole() {

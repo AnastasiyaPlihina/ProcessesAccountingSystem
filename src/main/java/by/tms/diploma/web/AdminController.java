@@ -4,6 +4,7 @@ import by.tms.diploma.entity.Admin;
 import by.tms.diploma.entity.Department;
 import by.tms.diploma.entity.User;
 import by.tms.diploma.service.DepartmentService;
+import by.tms.diploma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,8 @@ import java.util.List;
 public class AdminController {
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/authorisation")
     public String authorisation(@Valid @ModelAttribute("admin") Admin admin,
@@ -45,7 +48,7 @@ public class AdminController {
 
     @PostMapping("/addDepartment")
     public String addDepartment(@Valid @ModelAttribute("newDepartment") Department department,
-                             BindingResult bindingResult, Model model) {
+                                BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "admin/addDepartment";
         }
@@ -66,7 +69,7 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "admin/addEmployee";
         }
-
+        userService.saveUser(user);
         return "admin/addEmployee";
     }
 }
