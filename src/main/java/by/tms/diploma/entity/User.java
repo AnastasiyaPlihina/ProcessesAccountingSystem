@@ -1,12 +1,15 @@
 package by.tms.diploma.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class User extends AbstractEntity {
 private String firstName;
 private String secondName;
 private String password;
+@ManyToOne
+private Department department;
 private Role role;
 
     public User() {
