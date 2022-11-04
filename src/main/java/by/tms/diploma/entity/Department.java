@@ -10,7 +10,7 @@ public class Department extends AbstractEntity {
     @NotBlank
     private String name;
     @OneToMany
-    private List<User> employees;
+    private List<Employee> employees;
     @OneToMany
     private List<Equipment> equipmentList;
 
@@ -29,11 +29,11 @@ public class Department extends AbstractEntity {
         this.name = name;
     }
 
-    public List<User> getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(List<User> employees) {
+    public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
 

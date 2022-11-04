@@ -14,7 +14,7 @@
                 <p th:text="${employee.firstName} + ' ' + ${employee.secondName} + ' was added!'"></p>
                 <br>
             </div>
-            <form th:action="@{/admin/addEmployee}" th:object="${newUser}" method="post">
+            <form th:action="@{/admin/addEmployee}" th:object="${newEmployee}" method="post">
                 <div class="mb-3">
                     <label for="userFirstName" class="form-label">Employee's first name: </label>
                     <input type="text" th:field="*{firstName}" placeholder="Employee's first name" class="form-control"

@@ -1,22 +1,19 @@
 package by.tms.diploma.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import java.time.LocalDateTime;
 
 @Entity
 public class EquipmentLog extends AbstractEntity {
     @OneToOne
     private Process process;
     @OneToOne
-    private User user;
+    private Employee user;
 
     public EquipmentLog() {
     }
 
-    public EquipmentLog(Process process, User user) {
+    public EquipmentLog(Process process, Employee user) {
         this.process = process;
         this.user = user;
     }
@@ -30,11 +27,11 @@ public class EquipmentLog extends AbstractEntity {
     }
 
 
-    public User getUser() {
+    public Employee getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(Employee user) {
         this.user = user;
     }
 }

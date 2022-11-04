@@ -1,14 +1,13 @@
 package by.tms.diploma.service;
 
 import by.tms.diploma.entity.Department;
-import by.tms.diploma.entity.User;
+import by.tms.diploma.entity.Employee;
 import by.tms.diploma.exception.SaveException;
 import by.tms.diploma.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -29,10 +28,10 @@ public class DepartmentService {
        return departmentRepository.findAll();
     }
 
-    public void updateDepartment(long departmentId, User user) {
+    public void updateDepartment(long departmentId, Employee employee) {
         Optional<Department> departmentById = departmentRepository.findById(departmentId);
         Department department = departmentById.get();
-        department.getEmployees().add(user);
+        department.getEmployees().add(employee);
         departmentRepository.save(department);
     }
 }

@@ -2,9 +2,9 @@ package by.tms.diploma.web;
 
 import by.tms.diploma.entity.Admin;
 import by.tms.diploma.entity.Department;
-import by.tms.diploma.entity.User;
+import by.tms.diploma.entity.Employee;
 import by.tms.diploma.service.DepartmentService;
-import by.tms.diploma.service.UserService;
+import by.tms.diploma.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,7 @@ public class AdminController {
     @Autowired
     private DepartmentService departmentService;
     @Autowired
-    private UserService userService;
+    private EmployeeService employeeService;
 
     @PostMapping("/authorisation")
     public String authorisation(@Valid @ModelAttribute("admin") Admin admin,
@@ -62,20 +62,20 @@ public class AdminController {
     public String addEmployee(Model model) {
         List<Department> allDepartments = departmentService.findAllDepartments();
         model.addAttribute("departments", allDepartments);
-        model.addAttribute("newUser", new User());
+        model.addAttribute("newEmployee", new Employee());
         return "admin/addEmployee";
     }
 
     @PostMapping("/addEmployee")
-    public String addEmployee(@Valid @ModelAttribute("newUser") User user, BindingResult bindingResult, Model model) {
+    public String addEmployee(@Valid @ModelAttribute("newEmployee") Employee employee, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "admin/addEmployee";
         }
-        userService.saveUser(user);
-        model.addAttribute("employee", user);
+        employeeService.saveEmployee(employee);
+        model.addAttribute("employee", employee);
         List<Department> allDepartments = departmentService.findAllDepartments();
         model.addAttribute("departments", allDepartments);
-        model.addAttribute("newUser", new User());
+        model.addAttribute("newEmployee", new Employee());
         return "admin/addEmployee";
     }
 }
