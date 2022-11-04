@@ -6,6 +6,7 @@ import java.time.LocalDate;
 @Entity
 public class Equipment extends AbstractEntity {
     private String name;
+    private String qrCode;
     private String internalCode;
     private String inventoryNumber;
     private String technicalCharacteristic;
@@ -17,9 +18,10 @@ public class Equipment extends AbstractEntity {
     public Equipment() {
     }
 
-    public Equipment(String name, String internalCode, String inventoryNumber, String technicalCharacteristic, Department department, LocalDate lastQualificationDate,
-                     LocalDate lastMaintenanceServiceDate) {
+    public Equipment(String name, String qrCode, String internalCode, String inventoryNumber, String technicalCharacteristic, Department department,
+                     LocalDate lastQualificationDate, LocalDate lastMaintenanceServiceDate) {
         this.name = name;
+        this.qrCode = qrCode;
         this.internalCode = internalCode;
         this.inventoryNumber = inventoryNumber;
         this.technicalCharacteristic = technicalCharacteristic;
@@ -36,12 +38,20 @@ public class Equipment extends AbstractEntity {
         this.name = name;
     }
 
-    public String getCode() {
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
+
+    public String getInternalCode() {
         return internalCode;
     }
 
-    public void setCode(String code) {
-        this.internalCode = code;
+    public void setInternalCode(String internalCode) {
+        this.internalCode = internalCode;
     }
 
     public String getInventoryNumber() {

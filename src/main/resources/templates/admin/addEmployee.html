@@ -16,14 +16,14 @@
             </div>
             <form th:action="@{/admin/addEmployee}" th:object="${newEmployee}" method="post">
                 <div class="mb-3">
-                    <label for="userFirstName" class="form-label">Employee's first name: </label>
+                    <label for="employeeFirstName" class="form-label">Employee's first name: </label>
                     <input type="text" th:field="*{firstName}" placeholder="Employee's first name" class="form-control"
-                           id="userFirstName"/>
+                           id="employeeFirstName"/>
                 </div>
                 <div class="mb-3">
-                    <label for="userSecondName" class="form-label">Employee's second name: </label>
+                    <label for="employeeSecondName" class="form-label">Employee's second name: </label>
                     <input type="text" th:field="*{secondName}" placeholder="Employee's second name"
-                           class="form-control" id="userSecondName"/>
+                           class="form-control" id="employeeSecondName"/>
                 </div>
                 <div class="mb-3">
                     <label for="departmentSelect">Select employee's department: </label>
@@ -33,9 +33,9 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="userPassword" class="form-label">Employee's password: </label>
+                    <label for="employeePassword" class="form-label">Employee's password: </label>
                     <input type="text" th:field="*{password}" placeholder="Employee's password" class="form-control"
-                           id="userPassword"/>
+                           id="employeePassword"/>
                 </div>
                 <div class="mb-3">
                     <label for="roleSelect">Select employee's role: </label>

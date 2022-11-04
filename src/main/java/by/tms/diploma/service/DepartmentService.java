@@ -2,6 +2,7 @@ package by.tms.diploma.service;
 
 import by.tms.diploma.entity.Department;
 import by.tms.diploma.entity.Employee;
+import by.tms.diploma.entity.Equipment;
 import by.tms.diploma.exception.SaveException;
 import by.tms.diploma.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +29,16 @@ public class DepartmentService {
        return departmentRepository.findAll();
     }
 
-    public void updateDepartment(long departmentId, Employee employee) {
+    public void updateDepartmentWithEmployee(long departmentId, Employee employee) {
         Optional<Department> departmentById = departmentRepository.findById(departmentId);
         Department department = departmentById.get();
         department.getEmployees().add(employee);
+        departmentRepository.save(department);
+    }
+    public void updateDepartmentWithEquipment(long departmentId, Equipment equipment) {
+        Optional<Department> departmentById = departmentRepository.findById(departmentId);
+        Department department = departmentById.get();
+        department.getEquipmentList().add(equipment);
         departmentRepository.save(department);
     }
 }

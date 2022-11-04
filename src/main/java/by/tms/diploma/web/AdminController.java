@@ -1,10 +1,14 @@
 package by.tms.diploma.web;
 
+import by.tms.diploma.dto.EquipmentDto;
 import by.tms.diploma.entity.Admin;
 import by.tms.diploma.entity.Department;
 import by.tms.diploma.entity.Employee;
+import by.tms.diploma.entity.Equipment;
+import by.tms.diploma.mapper.EquipmentMapper;
 import by.tms.diploma.service.DepartmentService;
 import by.tms.diploma.service.EmployeeService;
+import by.tms.diploma.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +29,10 @@ public class AdminController {
     private DepartmentService departmentService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private EquipmentService equipmentService;
+    @Autowired
+    private EquipmentMapper equipmentMapper;
 
     @PostMapping("/authorisation")
     public String authorisation(@Valid @ModelAttribute("admin") Admin admin,
@@ -78,4 +86,27 @@ public class AdminController {
         model.addAttribute("newEmployee", new Employee());
         return "admin/addEmployee";
     }
+
+    @GetMapping("/addEquipment")
+    public String addEquipment(Model model) {
+        List<Department> allDepartments = departmentService.findAllDepartments();
+        model.addAttribute("departments", allDepartments);
+        model.addAttribute("newEquipmentDto", new EquipmentDto());
+        return "admin/addEquipment";
+    }
+
+    @PostMapping("/addEquipment")
+    public String addEquipment(@Valid @ModelAttribute("newEquipmentDto") EquipmentDto equipmentDto, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "admin/addEquipment";
+        }
+        Equipment equipment = equipmentMapper.convertEquipmentDtoToEquipment(equipmentDto);
+        equipmentService.saveEquipment(equipment);
+        model.addAttribute("equipment", equipment);
+        List<Department> allDepartments = departmentService.findAllDepartments();
+        model.addAttribute("departments", allDepartments);
+        model.addAttribute("newEquipmentDto", new EquipmentDto());
+        return "admin/addEquipment";
+    }
+
 }

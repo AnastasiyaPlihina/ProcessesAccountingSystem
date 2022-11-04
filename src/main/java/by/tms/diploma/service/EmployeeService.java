@@ -20,7 +20,7 @@ public class EmployeeService {
     public Optional<Employee> saveEmployee(Employee employee) {
         if(!employeeRepository.existsById(employee.getId())) {
             Employee saveEmployee = employeeRepository.save(employee);
-            departmentService.updateDepartment(saveEmployee.getDepartment().getId(), saveEmployee);
+            departmentService.updateDepartmentWithEmployee(saveEmployee.getDepartment().getId(), saveEmployee);
             return Optional.of(saveEmployee);
         } else {
             throw new SaveException();
