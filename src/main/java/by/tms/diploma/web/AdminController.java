@@ -54,13 +54,15 @@ public class AdminController {
         }
         departmentService.saveDepartment(department);
         model.addAttribute("departmentName", department.getName());
+        model.addAttribute("newDepartment", new Department());
         return "admin/addDepartment";
     }
 
     @GetMapping("/addEmployee")
-    public String addEmployee(@ModelAttribute("newUser") User user, Model model) {
+    public String addEmployee(Model model) {
         List<Department> allDepartments = departmentService.findAllDepartments();
         model.addAttribute("departments", allDepartments);
+        model.addAttribute("newUser", new User());
         return "admin/addEmployee";
     }
 
@@ -70,6 +72,10 @@ public class AdminController {
             return "admin/addEmployee";
         }
         userService.saveUser(user);
+        model.addAttribute("employee", user);
+        List<Department> allDepartments = departmentService.findAllDepartments();
+        model.addAttribute("departments", allDepartments);
+        model.addAttribute("newUser", new User());
         return "admin/addEmployee";
     }
 }
