@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @Transactional
 public class EquipmentService {
+
     @Autowired
     private EquipmentRepository equipmentRepository;
     @Autowired
@@ -26,5 +28,14 @@ public class EquipmentService {
         } else {
             throw new SaveException();
         }
+    }
+
+    public List<Equipment> findAllEquipment() {
+        return equipmentRepository.findAll();
+    }
+
+
+    public Optional<Equipment> findEquipmentByQrCode(String equipmentQrCode) {
+        return equipmentRepository.findByQrCode(equipmentQrCode);
     }
 }
