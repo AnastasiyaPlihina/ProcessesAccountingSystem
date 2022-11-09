@@ -1,6 +1,8 @@
 package by.tms.diploma.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 @Entity
@@ -14,12 +16,15 @@ public class Equipment extends AbstractEntity {
     private Department department;
     private LocalDate lastQualificationDate;
     private LocalDate lastMaintenanceServiceDate;
+    @Enumerated(EnumType.STRING)
+    private ObjectStatus equipmentStatus;
+    private boolean isProcess;
 
     public Equipment() {
     }
 
     public Equipment(String name, String qrCode, String internalCode, String inventoryNumber, String technicalCharacteristic, Department department,
-                     LocalDate lastQualificationDate, LocalDate lastMaintenanceServiceDate) {
+                     LocalDate lastQualificationDate, LocalDate lastMaintenanceServiceDate, ObjectStatus equipmentStatus) {
         this.name = name;
         this.qrCode = qrCode;
         this.internalCode = internalCode;
@@ -28,6 +33,7 @@ public class Equipment extends AbstractEntity {
         this.department = department;
         this.lastQualificationDate = lastQualificationDate;
         this.lastMaintenanceServiceDate = lastMaintenanceServiceDate;
+        this.equipmentStatus = equipmentStatus;
     }
 
     public String getName() {
@@ -92,5 +98,21 @@ public class Equipment extends AbstractEntity {
 
     public void setLastMaintenanceServiceDate(LocalDate lastMaintenanceServiceDate) {
         this.lastMaintenanceServiceDate = lastMaintenanceServiceDate;
+    }
+
+    public ObjectStatus getEquipmentStatus() {
+        return equipmentStatus;
+    }
+
+    public void setEquipmentStatus(ObjectStatus equipmentStatus) {
+        this.equipmentStatus = equipmentStatus;
+    }
+
+    public boolean isProcess() {
+        return isProcess;
+    }
+
+    public void setProcess(boolean process) {
+        isProcess = process;
     }
 }

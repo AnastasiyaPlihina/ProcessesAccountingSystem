@@ -18,6 +18,7 @@ public class EquipmentMapper {
         equipment.setTechnicalCharacteristic(equipmentDto.getTechnicalCharacteristic());
         equipment.setLastMaintenanceServiceDate(LocalDate.parse(equipmentDto.getLastMaintenanceServiceDate()));
         equipment.setLastQualificationDate(LocalDate.parse(equipmentDto.getLastQualificationDate()));
+        equipment.setEquipmentStatus(equipmentDto.getEquipmentStatus());
         return equipment;
     }
 }

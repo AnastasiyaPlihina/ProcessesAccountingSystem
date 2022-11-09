@@ -57,6 +57,13 @@
                     <input type="date" th:field="*{lastMaintenanceServiceDate}" placeholder="Equipment's last maintenance service date" class="form-control"
                            id="equipmentLastMaintenanceServiceDate"/>
                 </div>
+                <div class="mb-3">
+                    <label for="roleSelect">Select equipment's status: </label>
+                    <select class="form-select" id="roleSelect" th:field="*{equipmentStatus}">
+                        <option th:value="${T(by.tms.diploma.entity.ObjectStatus).ACTIVE}">Active</option>
+                        <option th:value="${T(by.tms.diploma.entity.ObjectStatus).DECOMMISSIONED}">Decommissioned</option>
+                    </select>
+                </div>
                 <button class="btn btn-primary">Add equipment</button>
             </form>
             <br>

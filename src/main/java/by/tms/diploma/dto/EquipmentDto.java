@@ -1,6 +1,7 @@
 package by.tms.diploma.dto;
 
 import by.tms.diploma.entity.Department;
+import by.tms.diploma.entity.ObjectStatus;
 
 public class EquipmentDto {
     private String name;
@@ -11,11 +12,12 @@ public class EquipmentDto {
     private Department department;
     private String lastQualificationDate;
     private String lastMaintenanceServiceDate;
-
+    private ObjectStatus equipmentStatus;
     public EquipmentDto() {
     }
 
-    public EquipmentDto(String name, String qrCode, String internalCode, String inventoryNumber, String technicalCharacteristic, Department department, String lastQualificationDate, String lastMaintenanceServiceDate) {
+    public EquipmentDto(String name, String qrCode, String internalCode, String inventoryNumber, String technicalCharacteristic, Department department,
+                        String lastQualificationDate, String lastMaintenanceServiceDate, ObjectStatus equipmentStatus) {
         this.name = name;
         this.qrCode = qrCode;
         this.internalCode = internalCode;
@@ -24,6 +26,7 @@ public class EquipmentDto {
         this.department = department;
         this.lastQualificationDate = lastQualificationDate;
         this.lastMaintenanceServiceDate = lastMaintenanceServiceDate;
+        this.equipmentStatus = equipmentStatus;
     }
 
     public String getName() {
@@ -88,5 +91,13 @@ public class EquipmentDto {
 
     public void setLastMaintenanceServiceDate(String lastMaintenanceServiceDate) {
         this.lastMaintenanceServiceDate = lastMaintenanceServiceDate;
+    }
+
+    public ObjectStatus getEquipmentStatus() {
+        return equipmentStatus;
+    }
+
+    public void setEquipmentStatus(ObjectStatus equipmentStatus) {
+        this.equipmentStatus = equipmentStatus;
     }
 }
