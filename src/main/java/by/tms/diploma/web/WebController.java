@@ -39,7 +39,7 @@ public class WebController {
     @PostMapping("/equipmentInfo")
     public String showEquipmentInfo(String equipmentQr, Model model) {
         Optional<Equipment> equipmentByQrCode = equipmentService.findEquipmentByQrCode(equipmentQr);
-        model.addAttribute("equipment", equipmentByQrCode);
+        equipmentByQrCode.ifPresent(equipment -> model.addAttribute("equipment", equipment));
         return "equipmentInfo";
 
     }

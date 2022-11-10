@@ -11,8 +11,8 @@
     <div class="row mt-5">
         <div class="col">
             <p>Choose equipment to show information:</p>
-            <form>
-                <select class="form-select">
+            <form th:action="@{/equipmentInfo}" method="post">
+                <select class="form-select" th:name="equipmentQr">
                     <option th:each="equipmentOpt : ${equipmentList}"
                             th:value="${equipmentOpt.qrCode}" th:text="${equipmentOpt.internalCode}">
                     </option>
