@@ -1,8 +1,10 @@
 package by.tms.diploma.web;
 
 import by.tms.diploma.entity.Admin;
+import by.tms.diploma.entity.Department;
 import by.tms.diploma.entity.Employee;
 import by.tms.diploma.entity.Equipment;
+import by.tms.diploma.repository.DepartmentRepository;
 import by.tms.diploma.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -18,6 +22,8 @@ import java.util.Optional;
 public class WebController {
     @Autowired
     private EquipmentService equipmentService;
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     @GetMapping
     public String startPage(Model model) {
@@ -31,8 +37,9 @@ public class WebController {
             model.addAttribute("admin", new Admin());
             return "admin/authorisation";
         } else {
-            model.addAttribute("user", new Employee());
-            return "user/authorisation";
+            List<Department> departmentList = departmentRepository.findAll();
+            model.addAttribute("departmentList", departmentList);
+            return "employee/authorisation";
         }
     }
 
@@ -41,6 +48,11 @@ public class WebController {
         Optional<Equipment> equipmentByQrCode = equipmentService.findEquipmentByQrCode(equipmentQr);
         equipmentByQrCode.ifPresent(equipment -> model.addAttribute("equipment", equipment));
         return "equipmentInfo";
+    }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession httpSession) {
+        httpSession.invalidate();
+        return "redirect:/";
     }
 }

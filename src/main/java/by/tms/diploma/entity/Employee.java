@@ -62,4 +62,12 @@ public class Employee extends AbstractEntity {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+               '}';
+    }
 }

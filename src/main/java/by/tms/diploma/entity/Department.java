@@ -44,4 +44,13 @@ public class Department extends AbstractEntity {
     public void setEquipmentList(List<Equipment> equipmentList) {
         this.equipmentList = equipmentList;
     }
+
+    @Override
+    public String toString() {
+        return "Department{" +
+                "name='" + name + '\'' +
+                ", employees=" + employees +
+                ", equipmentList=" + equipmentList +
+                '}';
+    }
 }
