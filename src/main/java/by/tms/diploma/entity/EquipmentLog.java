@@ -6,23 +6,23 @@ import javax.persistence.OneToOne;
 @Entity
 public class EquipmentLog extends AbstractEntity {
     @OneToOne
-    private Process process;
+    private AbstractProcess process;
     @OneToOne
     private Employee user;
 
     public EquipmentLog() {
     }
 
-    public EquipmentLog(Process process, Employee user) {
+    public EquipmentLog(AbstractProcess process, Employee user) {
         this.process = process;
         this.user = user;
     }
 
-    public Process getProcess() {
+    public AbstractProcess getProcess() {
         return process;
     }
 
-    public void setProcess(Process process) {
+    public void setProcess(AbstractProcess process) {
         this.process = process;
     }
 
