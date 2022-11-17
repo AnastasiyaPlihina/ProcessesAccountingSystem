@@ -10,7 +10,7 @@ public class Admin {
     @NotBlank(message = "Field must not be empty")
     @Pattern(message = "Enter correct password!", regexp = "admin")
     private String password;
-
+    private final Role role = Role.ADMIN;
     public Admin() {
     }
 
@@ -19,7 +19,7 @@ public class Admin {
         this.password = password;
     }
 
-    private final Role role = Role.ADMIN;
+
 
     public String getNickname() {
         return nickname;
