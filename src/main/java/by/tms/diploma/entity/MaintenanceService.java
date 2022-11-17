@@ -1,8 +1,10 @@
 package by.tms.diploma.entity;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 @Entity
+@DiscriminatorValue("MP")
 public class MaintenanceService extends AbstractProcess {
     private String ms;
 

@@ -2,32 +2,28 @@ package by.tms.diploma.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "P_TYPE")
 public abstract class AbstractProcess extends AbstractEntity {
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private LocalDateTime processStart;
+    private LocalDateTime processEnd;
 
-    public AbstractProcess() {
-    }
-
-    public AbstractProcess(LocalDateTime start, LocalDateTime end) {
-        this.start = start;
-        this.end = end;
-    }
-    public LocalDateTime getStart() {
-        return start;
+    public LocalDateTime getProcessStart() {
+        return processStart;
     }
 
-    public void setStart(LocalDateTime start) {
-        this.start = start;
+    public void setProcessStart(LocalDateTime processStart) {
+        this.processStart = processStart;
     }
 
-    public LocalDateTime getEnd() {
-        return end;
+    public LocalDateTime getProcessEnd() {
+        return processEnd;
     }
 
-    public void setEnd(LocalDateTime end) {
-        this.end = end;
+    public void setProcessEnd(LocalDateTime processEnd) {
+        this.processEnd = processEnd;
     }
+
 }

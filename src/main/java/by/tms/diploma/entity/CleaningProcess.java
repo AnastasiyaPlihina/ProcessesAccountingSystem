@@ -1,19 +1,12 @@
 package by.tms.diploma.entity;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import java.time.LocalDateTime;
 
 @Entity
+@DiscriminatorValue("CP")
 public class CleaningProcess extends AbstractProcess {
     private String cp;
-
-    public CleaningProcess() {
-    }
-
-    public CleaningProcess(LocalDateTime start, LocalDateTime end, String cp) {
-        super(start, end);
-        this.cp = cp;
-    }
 
     public String getCp() {
         return cp;
