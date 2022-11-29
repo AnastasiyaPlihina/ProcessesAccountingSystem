@@ -18,25 +18,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/", "/user/reg").permitAll()
+                .antMatchers("/**").permitAll()
+//                .antMatchers("/user/new", "/user/{id}/edit").hasAuthority("ADMIN")
+//                .antMatchers("/user/{id}").hasAnyAuthority("USER", "ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/user/login")
+                .loginPage("/login")
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll();
+                .permitAll()
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/");
     }
-
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(10);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
-    }
 
+    }
 }

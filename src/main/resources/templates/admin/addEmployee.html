@@ -11,10 +11,10 @@
     <div class="row">
         <div class="col">
             <div th:if="${employee} != null">
-                <p th:text="${employee.firstName} + ' ' + ${employee.secondName} + ' was added!'"></p>
+                <p th:text="${user.firstName} + ' ' + ${user.secondName} + ' was added!'"></p>
                 <br>
             </div>
-            <form th:action="@{/admin/addEmployee}" th:object="${newEmployee}" method="post">
+            <form th:action="@{/admin/addEmployee}" th:object="${userDto}" method="post">
                 <div class="mb-3">
                     <label for="employeeFirstName" class="form-label">Employee's first name: </label>
                     <input type="text" th:field="*{firstName}" placeholder="Employee's first name" class="form-control"
@@ -33,21 +33,27 @@
                     </select>
                 </div>
                 <div class="mb-3">
+                    <label for="employeeUsername" class="form-label">Employee's username: </label>
+                    <input type="text" th:field="*{username}" placeholder="Employee's username" class="form-control"
+                           id="employeeUsername"/>
+                </div>
+                <div class="mb-3">
                     <label for="employeePassword" class="form-label">Employee's password: </label>
                     <input type="text" th:field="*{password}" placeholder="Employee's password" class="form-control"
                            id="employeePassword"/>
                 </div>
                 <div class="mb-3">
                     <label for="roleSelect">Select employee's role: </label>
-                    <select class="form-select" id="roleSelect" th:field="*{role}">
-                        <option th:value="${T(by.tms.diploma.entity.Role).WORKER}">Worker</option>
-                        <option th:value="${T(by.tms.diploma.entity.Role).HEAD_OF_DEPARTMENT}">Head of department</option>
-                    </select>
+                    <div id="roleSelect" th:each="roleOpt : ${T(by.tms.diploma.entity.Role).values()}">
+                        <input type="checkbox" th:field="*{roles}" th:value="${roleOpt}"/>
+                        <label th:text="${roleOpt}"></label>
+                        <br>
+                    </div>
                 </div>
                 <button class="btn btn-primary">Add employee</button>
             </form>
             <br>
-            <form th:action="@{/admin/personalAccount}" method="get">
+            <form th:action="@{/}">
                 <button class="btn btn-secondary">Back</button>
             </form>
         </div>

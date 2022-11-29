@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "P_TYPE")
+@Table(name = "process")
 public abstract class AbstractProcess extends AbstractEntity {
     private LocalDateTime processStart;
     private LocalDateTime processEnd;

@@ -6,6 +6,7 @@ import by.tms.diploma.entity.Employee;
 import by.tms.diploma.entity.Equipment;
 import by.tms.diploma.repository.DepartmentRepository;
 import by.tms.diploma.service.EquipmentService;
+import by.tms.diploma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,8 @@ import java.util.Optional;
 @RequestMapping
 public class WebController {
     @Autowired
+    private UserService userService;
+    @Autowired
     private EquipmentService equipmentService;
     @Autowired
     private DepartmentRepository departmentRepository;
@@ -28,20 +31,26 @@ public class WebController {
     @GetMapping
     public String startPage(Model model) {
         model.addAttribute("equipmentList", equipmentService.findAllEquipment());
-        return "startPage";
+        return "index";
     }
 
-    @PostMapping("/authorisation")
-    public String authorisation(String userRole, Model model) {
-        if (userRole.equals("admin")) {
-            model.addAttribute("admin", new Admin());
-            return "admin/authorisation";
-        } else {
-            List<Department> departmentList = departmentRepository.findAll();
-            model.addAttribute("departmentList", departmentList);
-            return "employee/authorisation";
-        }
+    @GetMapping("/login")
+    public String login() {
+        userService.saveSuperAdmin();
+        return "login";
     }
+
+//    @PostMapping("/authorisation")
+//    public String authorisation(String userRole, Model model) {
+//        if (userRole.equals("admin")) {
+//            model.addAttribute("admin", new Admin());
+//            return "admin/authorisation";
+//        } else {
+//            List<Department> departmentList = departmentRepository.findAll();
+//            model.addAttribute("departmentList", departmentList);
+//            return "employee/authorisation";
+//        }
+//    }
 
     @PostMapping("/equipmentInfo")
     public String showEquipmentInfo(String equipmentQr, Model model) {
@@ -50,9 +59,9 @@ public class WebController {
         return "equipmentInfo";
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpSession httpSession) {
-        httpSession.invalidate();
-        return "redirect:/";
-    }
+//    @GetMapping("/logout")
+//    public String logout(HttpSession httpSession) {
+//        httpSession.invalidate();
+//        return "redirect:/";
+//    }
 }
