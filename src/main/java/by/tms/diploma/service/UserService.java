@@ -63,4 +63,12 @@ public class UserService implements UserDetailsService {
             throw new SaveException();
         }
     }
+    public Optional<User> findUserByUsername(String username) {
+        Optional<User> byUsername = userRepository.findByUsername(username);
+        if (byUsername.isPresent()) {
+            return byUsername;
+        } else {
+            throw new UsernameNotFoundException(username);
+        }
+    }
 }

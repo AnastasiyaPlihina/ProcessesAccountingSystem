@@ -1,5 +1,6 @@
 package by.tms.diploma.service;
 
+import by.tms.diploma.entity.Department;
 import by.tms.diploma.entity.Employee;
 import by.tms.diploma.entity.Equipment;
 import by.tms.diploma.exception.SaveException;
@@ -38,4 +39,10 @@ public class EquipmentService {
     public Optional<Equipment> findEquipmentByQrCode(String equipmentQrCode) {
         return equipmentRepository.findByQrCode(equipmentQrCode);
     }
+
+    public List<Equipment> findEquipmentOfDepartment(long departmentId) {
+        Optional<Department> departmentById = departmentService.findDepartmentById(departmentId);
+        return departmentById.get().getEquipmentList();
+    }
 }
+

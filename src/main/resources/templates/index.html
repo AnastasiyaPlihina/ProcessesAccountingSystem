@@ -25,7 +25,7 @@
                     <div th:if="${!equipmentList.isEmpty()}">
                         <div class="row mt-5">
                             <div class="col">
-                                <p>Choose to show information:</p>
+                                <p>Choose equipment to show information:</p>
                                 <form th:action="@{/equipmentInfo}" method="post">
                                     <select class="form-select" th:name="equipmentQr">
                                         <option th:each="equipmentOpt : ${equipmentList}"
@@ -61,7 +61,7 @@
                     </form>
                 </div>
                 <div sec:authorize="hasAuthority('WORKER')">
-                    <form th:action="@{/}" method="get">
+                    <form th:action="@{/employee/startProcess}" method="get">
                         <button class="btn btn-outline-primary mt-5">Start process</button>
                     </form>
                 </div>

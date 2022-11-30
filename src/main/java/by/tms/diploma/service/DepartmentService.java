@@ -29,6 +29,9 @@ public class DepartmentService {
     public List<Department> findAllDepartments() {
        return departmentRepository.findAll();
     }
+    public Optional<Department> findDepartmentById(long id) {
+        return departmentRepository.findById(id);
+    }
 
     public void updateDepartmentWithEmployee(long departmentId, User employee) {
         Optional<Department> departmentById = departmentRepository.findById(departmentId);
