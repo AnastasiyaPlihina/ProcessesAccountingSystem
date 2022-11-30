@@ -1,5 +1,6 @@
 package by.tms.diploma.web;
 
+import by.tms.diploma.dto.ProcessDto;
 import by.tms.diploma.entity.Department;
 import by.tms.diploma.entity.Equipment;
 import by.tms.diploma.repository.DepartmentRepository;
@@ -11,6 +12,7 @@ import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -33,11 +35,13 @@ public class EmployeeController {
         long departmentId = userService.findUserByUsername(username).get().getDepartment().getId();
         List<Equipment> equipmentOfDepartment = equipmentService.findEquipmentOfDepartment(departmentId);
         model.addAttribute("equipmentList", equipmentOfDepartment);
+        model.addAttribute("processDto", new ProcessDto());
         return "employee/process";
     }
 
     @PostMapping("/chooseEquipment")
-    public String chooseEquipment() {
+    public String chooseEquipment(@ModelAttribute ProcessDto processDto) {
+
         return "employee/process";
     }
 }
