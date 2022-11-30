@@ -45,6 +45,12 @@ public class UserService implements UserDetailsService {
             userRepository.save(superAdmin);
         }
     }
+    public void saveAuditor() {
+        if (!userRepository.existsByUsername("auditor")) {
+            User auditor = new User("auditor", encoder.encode("auditor"), Set.of(Role.AUDITOR));
+            userRepository.save(auditor);
+        }
+    }
 
     public Optional<User> saveUser(UserDto userDto) {
         User user = userMapper.convertUserDtoToUser(userDto);
