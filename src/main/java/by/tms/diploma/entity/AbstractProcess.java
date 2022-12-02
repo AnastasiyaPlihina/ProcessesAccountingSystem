@@ -12,6 +12,8 @@ public abstract class AbstractProcess extends AbstractEntity {
     private LocalDateTime processEnd;
     @ManyToOne
     private Equipment equipment;
+    @ManyToOne
+    private User employee;
 
     public AbstractProcess() {
     }
@@ -42,5 +44,13 @@ public abstract class AbstractProcess extends AbstractEntity {
 
     public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
+    }
+
+    public User getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(User employee) {
+        this.employee = employee;
     }
 }

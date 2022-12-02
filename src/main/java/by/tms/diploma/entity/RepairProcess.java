@@ -2,11 +2,12 @@ package by.tms.diploma.entity;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("RP")
 public class RepairProcess extends AbstractProcess {
-    private String rp;
+    private String description;
 
     public RepairProcess() {
     }
@@ -15,11 +16,16 @@ public class RepairProcess extends AbstractProcess {
         super(equipment);
     }
 
-    public String getRp() {
-        return rp;
+    public RepairProcess(Equipment equipment, String description) {
+        super(equipment);
+        this.description = description;
     }
 
-    public void setRp(String rp) {
-        this.rp = rp;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -1,12 +1,17 @@
 package by.tms.diploma.entity;
 
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("MP")
 public class MaintenanceService extends AbstractProcess {
-    private String ms;
+
+    @ElementCollection
+    private List<String> servicedItems;
 
     public MaintenanceService() {
     }
@@ -15,11 +20,16 @@ public class MaintenanceService extends AbstractProcess {
         super(equipment);
     }
 
-    public String getMs() {
-        return ms;
+    public MaintenanceService(Equipment equipment, List<String> servicedItems) {
+        super(equipment);
+        this.servicedItems = servicedItems;
     }
 
-    public void setMs(String ms) {
-        this.ms = ms;
+    public List<String> getServicedItems() {
+        return servicedItems;
+    }
+
+    public void setServicedItems(List<String> servicedItems) {
+        this.servicedItems = servicedItems;
     }
 }
