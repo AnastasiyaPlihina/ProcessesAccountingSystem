@@ -10,6 +10,15 @@ import java.time.LocalDateTime;
 public abstract class AbstractProcess extends AbstractEntity {
     private LocalDateTime processStart;
     private LocalDateTime processEnd;
+    @ManyToOne
+    private Equipment equipment;
+
+    public AbstractProcess() {
+    }
+
+    public AbstractProcess(Equipment equipment) {
+        this.equipment = equipment;
+    }
 
     public LocalDateTime getProcessStart() {
         return processStart;
@@ -27,4 +36,11 @@ public abstract class AbstractProcess extends AbstractEntity {
         this.processEnd = processEnd;
     }
 
+    public Equipment getEquipment() {
+        return equipment;
+    }
+
+    public void setEquipment(Equipment equipment) {
+        this.equipment = equipment;
+    }
 }

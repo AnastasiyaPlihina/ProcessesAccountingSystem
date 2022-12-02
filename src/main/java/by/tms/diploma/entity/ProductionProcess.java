@@ -8,6 +8,13 @@ import javax.persistence.Entity;
 public class ProductionProcess extends AbstractProcess {
     private String pp;
 
+    public ProductionProcess() {
+    }
+
+    public ProductionProcess(Equipment equipment) {
+        super(equipment);
+    }
+
     public String getPp() {
         return pp;
     }

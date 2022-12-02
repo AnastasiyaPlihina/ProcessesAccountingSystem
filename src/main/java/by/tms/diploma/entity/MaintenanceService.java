@@ -8,6 +8,13 @@ import javax.persistence.Entity;
 public class MaintenanceService extends AbstractProcess {
     private String ms;
 
+    public MaintenanceService() {
+    }
+
+    public MaintenanceService(Equipment equipment) {
+        super(equipment);
+    }
+
     public String getMs() {
         return ms;
     }

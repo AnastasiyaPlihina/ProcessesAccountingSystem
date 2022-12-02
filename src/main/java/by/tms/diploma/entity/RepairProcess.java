@@ -8,6 +8,13 @@ import javax.persistence.Entity;
 public class RepairProcess extends AbstractProcess {
     private String rp;
 
+    public RepairProcess() {
+    }
+
+    public RepairProcess(Equipment equipment) {
+        super(equipment);
+    }
+
     public String getRp() {
         return rp;
     }
