@@ -4,6 +4,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -16,12 +17,8 @@ public class MaintenanceService extends AbstractProcess {
     public MaintenanceService() {
     }
 
-    public MaintenanceService(Equipment equipment) {
-        super(equipment);
-    }
-
-    public MaintenanceService(Equipment equipment, List<String> servicedItems) {
-        super(equipment);
+    public MaintenanceService(Equipment equipment, User employee, List<String> servicedItems) {
+        super(equipment, employee);
         this.servicedItems = servicedItems;
     }
 

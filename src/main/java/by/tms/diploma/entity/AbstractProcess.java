@@ -18,8 +18,9 @@ public abstract class AbstractProcess extends AbstractEntity {
     public AbstractProcess() {
     }
 
-    public AbstractProcess(Equipment equipment) {
+    public AbstractProcess(Equipment equipment, User employee) {
         this.equipment = equipment;
+        this.employee = employee;
     }
 
     public LocalDateTime getProcessStart() {
@@ -53,4 +54,5 @@ public abstract class AbstractProcess extends AbstractEntity {
     public void setEmployee(User employee) {
         this.employee = employee;
     }
+
 }

@@ -2,6 +2,7 @@ package by.tms.diploma.entity;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -12,12 +13,8 @@ public class RepairProcess extends AbstractProcess {
     public RepairProcess() {
     }
 
-    public RepairProcess(Equipment equipment) {
-        super(equipment);
-    }
-
-    public RepairProcess(Equipment equipment, String description) {
-        super(equipment);
+    public RepairProcess(Equipment equipment, User employee, String description) {
+        super(equipment, employee);
         this.description = description;
     }
 
