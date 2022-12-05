@@ -1,8 +1,8 @@
 package by.tms.diploma.service;
 
 import by.tms.diploma.entity.Department;
-import by.tms.diploma.entity.Employee;
 import by.tms.diploma.entity.Equipment;
+import by.tms.diploma.exception.EquipmentNotFoundException;
 import by.tms.diploma.exception.SaveException;
 import by.tms.diploma.repository.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +28,15 @@ public class EquipmentService {
             return Optional.of(saveEquipment);
         } else {
             throw new SaveException();
+        }
+    }
+    public Optional<Equipment> updateEquipment(Equipment equipment) {
+        if(equipmentRepository.existsById(equipment.getId())) {
+            Equipment updateEquipment = equipmentRepository.save(equipment);
+//            departmentService.updateDepartmentWithEquipment(updateEquipment.getDepartment().getId(), updateEquipment);
+            return Optional.of(updateEquipment);
+        } else {
+            throw new EquipmentNotFoundException();
         }
     }
 

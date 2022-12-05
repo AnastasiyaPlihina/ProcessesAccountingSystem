@@ -115,4 +115,14 @@ public class Equipment extends AbstractEntity {
     public void setProcess(boolean process) {
         isProcess = process;
     }
+
+    @Override
+    public String toString() {
+        return "Equipment{" +
+                "id " + this.getId() +
+                ", name='" + name + '\'' +
+               
+                ", isProcess=" + isProcess +
+                '}';
+    }
 }

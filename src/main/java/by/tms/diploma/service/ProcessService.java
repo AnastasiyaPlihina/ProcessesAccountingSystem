@@ -21,6 +21,8 @@ public class ProcessService {
     private ProcessRepository processRepository;
     @Autowired
     private ProcessMapper processMapper;
+    @Autowired
+    private EquipmentService equipmentService;
 
     public void saveProcess(AbstractProcess process) {
         processRepository.save(process);
@@ -28,7 +30,10 @@ public class ProcessService {
 
     public CleaningProcess startCleaningProcess(User employee, Equipment equipment, CleaningProcessDto cleaningProcessDto) {
         CleaningProcess cleaningProcess = processMapper.convertCleaningProcessDtoToCleaningProcess(cleaningProcessDto);
-        cleaningProcess.setEquipment(equipment);
+        equipment.setProcess(true);
+        Optional<Equipment> equipment1 = equipmentService.updateEquipment(equipment);
+        System.out.println(equipment1);
+        cleaningProcess.setEquipment(equipment1.get());
         cleaningProcess.setEmployee(employee);
         cleaningProcess.setProcessStart(LocalDateTime.now());
         return cleaningProcess;

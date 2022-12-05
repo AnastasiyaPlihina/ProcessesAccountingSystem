@@ -1,7 +1,6 @@
 package by.tms.diploma.service;
 
 import by.tms.diploma.dto.UserDto;
-import by.tms.diploma.entity.Employee;
 import by.tms.diploma.entity.Role;
 import by.tms.diploma.entity.User;
 import by.tms.diploma.exception.SaveException;

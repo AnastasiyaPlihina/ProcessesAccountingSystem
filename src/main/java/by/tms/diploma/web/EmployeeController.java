@@ -34,7 +34,17 @@ public class EmployeeController {
     private EquipmentService equipmentService;
     @Autowired
     private ProcessService processService;
+    @Autowired
+    private DepartmentService departmentService;
 
+    @GetMapping("/showEquipmentList")
+    public String showEquipmentList(HttpServletRequest request, Model model) {
+        String username = request.getRemoteUser();
+        Optional<Department> departmentById = departmentService.findDepartmentById(userService.findUserByUsername(username).get().getDepartment().getId());
+        List<Equipment> equipmentOfDepartment = equipmentService.findEquipmentOfDepartment(departmentById.get().getId());
+        model.addAttribute("equipmentList", equipmentOfDepartment);
+        return "employee/equipmentList";
+    }
 
     @GetMapping("/selectProcess")
     public String selectProcess(Model model, HttpServletRequest request) {
@@ -54,7 +64,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/cleaning")
-    public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto) {
+    public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto, HttpSession httpSession, Model model) {
+        Equipment equipment = (Equipment) httpSession.getAttribute("equipment");
+        model.addAttribute("equipment", equipment);
         return "process/cleaning";
     }
 
@@ -65,8 +77,9 @@ public class EmployeeController {
         Optional<User> userByUsername = userService.findUserByUsername(username);
         CleaningProcess cleaningProcess = processService.startCleaningProcess(userByUsername.get(), equipment, cleaningProcessDto);
         processService.saveProcess(cleaningProcess);
+        httpSession.invalidate();
 //        model.addAttribute("cleaningProcessDto", new CleaningProcess());
-        return "process/cleaning";
+        return "redirect:/";
     }
 
 }
