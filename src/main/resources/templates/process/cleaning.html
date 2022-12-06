@@ -10,7 +10,10 @@
 <div class="container">
     <div class="row mt-5">
         <div class="col">
-                <h3 th:text="'Cleaning process of ' + ${equipment.name}"></h3>
+                <h3>Cleaning process of:</h3>
+            <div th:each="equipmentOpt : ${equipmentList}">
+                <p th:text="${equipmentOpt.internalCode}"></p>
+            </div>
                 <br>
                 <form th:action="@{/employee/cleaning}" th:object="${cleaningProcessDto}" method="post">
                     <!--                <input type="hidden" th:field="*{equipmentId}" th:value="${process.equipment.id}"/>-->

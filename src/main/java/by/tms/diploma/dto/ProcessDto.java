@@ -1,23 +1,25 @@
 package by.tms.diploma.dto;
 
+import java.util.List;
+
 public class ProcessDto {
-    private String equipmentQrCode;
+    private List<String> equipmentQrCodes;
     private String processType;
 
     public ProcessDto() {
     }
 
-    public ProcessDto(String equipmentQrCode, String processType) {
-        this.equipmentQrCode = equipmentQrCode;
+    public ProcessDto(List<String> equipmentQrCodes, String processType) {
+        this.equipmentQrCodes = equipmentQrCodes;
         this.processType = processType;
     }
 
-    public String getEquipmentQrCode() {
-        return equipmentQrCode;
+    public List<String> getEquipmentQrCodes() {
+        return equipmentQrCodes;
     }
 
-    public void setEquipmentQrCode(String equipmentQrCode) {
-        this.equipmentQrCode = equipmentQrCode;
+    public void setEquipmentQrCodes(List<String> equipmentQrCodes) {
+        this.equipmentQrCodes = equipmentQrCodes;
     }
 
     public String getProcessType() {
@@ -31,7 +33,7 @@ public class ProcessDto {
     @Override
     public String toString() {
         return "ProcessDto{" +
-                "equipmentQrCode='" + equipmentQrCode + '\'' +
+                "equipmentQrCodes='" + equipmentQrCodes + '\'' +
                 ", processType='" + processType + '\'' +
                 '}';
     }

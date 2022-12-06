@@ -2,6 +2,7 @@ package by.tms.diploma.entity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -10,15 +11,15 @@ import java.time.LocalDateTime;
 public abstract class AbstractProcess extends AbstractEntity {
     private LocalDateTime processStart;
     private LocalDateTime processEnd;
-    @ManyToOne
-    private Equipment equipment;
+    @ManyToMany
+    private List<Equipment> equipment;
     @ManyToOne
     private User employee;
 
     public AbstractProcess() {
     }
 
-    public AbstractProcess(Equipment equipment, User employee) {
+    public AbstractProcess(List<Equipment> equipment, User employee) {
         this.equipment = equipment;
         this.employee = employee;
     }
@@ -39,11 +40,11 @@ public abstract class AbstractProcess extends AbstractEntity {
         this.processEnd = processEnd;
     }
 
-    public Equipment getEquipment() {
+    public List<Equipment> getEquipment() {
         return equipment;
     }
 
-    public void setEquipment(Equipment equipment) {
+    public void setEquipment(List<Equipment> equipment) {
         this.equipment = equipment;
     }
 

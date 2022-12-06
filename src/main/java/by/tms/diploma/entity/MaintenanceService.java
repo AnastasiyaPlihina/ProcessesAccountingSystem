@@ -17,7 +17,7 @@ public class MaintenanceService extends AbstractProcess {
     public MaintenanceService() {
     }
 
-    public MaintenanceService(Equipment equipment, User employee, List<String> servicedItems) {
+    public MaintenanceService(List<Equipment> equipment, User employee, List<String> servicedItems) {
         super(equipment, employee);
         this.servicedItems = servicedItems;
     }

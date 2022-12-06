@@ -13,7 +13,7 @@ public class RepairProcess extends AbstractProcess {
     public RepairProcess() {
     }
 
-    public RepairProcess(Equipment equipment, User employee, String description) {
+    public RepairProcess(List<Equipment> equipment, User employee, String description) {
         super(equipment, employee);
         this.description = description;
     }

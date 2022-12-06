@@ -8,20 +8,20 @@ import by.tms.diploma.service.DepartmentService;
 import by.tms.diploma.service.EquipmentService;
 import by.tms.diploma.service.ProcessService;
 import by.tms.diploma.service.UserService;
+import org.apache.coyote.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.HttpRequestHandler;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.http.HttpRequest;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,26 +58,28 @@ public class EmployeeController {
 
     @PostMapping("/selectProcess")
     public String selectProcess(@ModelAttribute ProcessDto processDto, HttpSession httpSession) {
-        Optional<Equipment> equipmentByQrCode = equipmentService.findEquipmentByQrCode(processDto.getEquipmentQrCode());
-        httpSession.setAttribute("equipment", equipmentByQrCode.get());
+//        Optional<Equipment> equipmentByQrCode = equipmentService.findEquipmentByQrCode(processDto.getEquipmentQrCode());
+//        httpSession.setAttribute("equipment", equipmentByQrCode.get());
+        httpSession.setAttribute("equipmentQrCodeList", processDto.getEquipmentQrCodes());
         return "redirect:/employee/" + processDto.getProcessType();
     }
 
     @GetMapping("/cleaning")
     public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto, HttpSession httpSession, Model model) {
-        Equipment equipment = (Equipment) httpSession.getAttribute("equipment");
-        model.addAttribute("equipment", equipment);
+        List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
+        httpSession.removeAttribute("equipmentQrCodeList");
+        List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
+        model.addAttribute("equipmentList", equipmentList);
         return "process/cleaning";
     }
 
     @PostMapping("/cleaning")
-    public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto, Model model, HttpSession httpSession, HttpServletRequest request) {
-        Equipment equipment = (Equipment) httpSession.getAttribute("equipment");
+    public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto, Model model, HttpServletRequest request) {
+        List<Equipment> equipmentList = (List<Equipment>) model.getAttribute("equipmentList");
         String username = request.getRemoteUser();
         Optional<User> userByUsername = userService.findUserByUsername(username);
-        CleaningProcess cleaningProcess = processService.startCleaningProcess(userByUsername.get(), equipment, cleaningProcessDto);
+        CleaningProcess cleaningProcess = processService.startCleaningProcess(userByUsername.get(), equipmentList, cleaningProcessDto);
         processService.saveProcess(cleaningProcess);
-        httpSession.invalidate();
 //        model.addAttribute("cleaningProcessDto", new CleaningProcess());
         return "redirect:/";
     }

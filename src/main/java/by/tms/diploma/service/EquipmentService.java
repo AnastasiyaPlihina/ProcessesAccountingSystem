@@ -53,5 +53,8 @@ public class EquipmentService {
         Optional<Department> departmentById = departmentService.findDepartmentById(departmentId);
         return departmentById.get().getEquipmentList();
     }
+    public List<Equipment> findListOfInternalCodes(List<String> equipmentQrCodeList) {
+       return equipmentQrCodeList.stream().map(s -> equipmentRepository.findByQrCode(s).get()).toList();
+    }
 }
 

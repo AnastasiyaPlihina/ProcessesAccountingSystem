@@ -3,6 +3,7 @@ package by.tms.diploma.entity;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("PP")
@@ -13,7 +14,7 @@ public class ProductionProcess extends AbstractProcess {
     public ProductionProcess() {
     }
 
-    public ProductionProcess(Equipment equipment, User employee, String productName, String seriesNumber) {
+    public ProductionProcess(List<Equipment> equipment, User employee, String productName, String seriesNumber) {
         super(equipment, employee);
         this.productName = productName;
         this.seriesNumber = seriesNumber;

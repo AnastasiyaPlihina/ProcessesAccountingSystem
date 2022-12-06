@@ -3,6 +3,7 @@ package by.tms.diploma.entity;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @DiscriminatorValue("CP")
@@ -18,7 +19,7 @@ public class CleaningProcess extends AbstractProcess {
         this.procedure = procedure;
     }
 
-    public CleaningProcess(Equipment equipment, User employee, String cleaningType, String procedure) {
+    public CleaningProcess(List<Equipment> equipment, User employee, String cleaningType, String procedure) {
         super(equipment, employee);
         this.cleaningType = cleaningType;
         this.procedure = procedure;

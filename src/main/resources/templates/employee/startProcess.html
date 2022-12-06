@@ -10,18 +10,21 @@
 <div class="container">
     <div class="row mt-5">
             <div class="col">
-                <p>Choose equipment and kind of process:</p>
+                <h3>Select equipment and kind of process:</h3>
+                <br>
                 <form th:action="@{/employee/selectProcess}" th:object="${processDto}" method="post">
-                    <select class="form-select" th:field="*{equipmentQrCode}">
-                        <option th:each="equipmentOpt : ${equipmentList}"
-                                th:value="${equipmentOpt.qrCode}" th:text="${equipmentOpt.internalCode}">
-                        </option>
-                    </select>
-                    <br>
+                    <p>Select equipment: </p>
+                    <div th:each="equipmentOpt : ${equipmentList}">
+                        <input type="checkbox" th:field="*{equipmentQrCodes}" th:value="${equipmentOpt.qrCode}"/>
+                        <label th:text="${equipmentOpt.internalCode}" ></label>
+                        <br>
+                    </div>
+                    <p>Select kind of process: </p>
                     <input type="radio" th:field="*{processType}" th:value="'cleaning'"/>Cleaning process<br/>
                     <input type="radio" th:field="*{processType}" th:value="'production'"/>Cleaning process<br/>
                     <input type="radio" th:field="*{processType}" th:value="'maintenance'"/>Maintenance service<br/>
                     <input type="radio" th:field="*{processType}" th:value="'repair'"/>Repair process<br/>
+                    <br>
                     <button class="btn btn-primary mt-3">Continue</button>
                 </form>
             </div>

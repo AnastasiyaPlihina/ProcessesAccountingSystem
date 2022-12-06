@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,12 +29,13 @@ public class ProcessService {
         processRepository.save(process);
     }
 
-    public CleaningProcess startCleaningProcess(User employee, Equipment equipment, CleaningProcessDto cleaningProcessDto) {
+    public CleaningProcess startCleaningProcess(User employee, List<Equipment> equipments, CleaningProcessDto cleaningProcessDto) {
         CleaningProcess cleaningProcess = processMapper.convertCleaningProcessDtoToCleaningProcess(cleaningProcessDto);
-        equipment.setProcess(true);
-        Optional<Equipment> equipment1 = equipmentService.updateEquipment(equipment);
-        System.out.println(equipment1);
-        cleaningProcess.setEquipment(equipment1.get());
+        for (Equipment equipment:equipments) {
+            equipment.setProcess(true);
+            Optional<Equipment> updateEquipment = equipmentService.updateEquipment(equipment);
+            cleaningProcess.getEquipment().add(updateEquipment.get());
+        }
         cleaningProcess.setEmployee(employee);
         cleaningProcess.setProcessStart(LocalDateTime.now());
         return cleaningProcess;
