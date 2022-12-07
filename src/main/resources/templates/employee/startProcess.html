@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Start process</title>
@@ -20,10 +20,14 @@
                         <br>
                     </div>
                     <p>Select kind of process: </p>
+                    <div sec:authorize="hasAuthority('PRODUCTION_WORKER')">
                     <input type="radio" th:field="*{processType}" th:value="'cleaning'"/>Cleaning process<br/>
-                    <input type="radio" th:field="*{processType}" th:value="'production'"/>Cleaning process<br/>
+                    <input type="radio" th:field="*{processType}" th:value="'production'"/>Production process<br/>
+                    </div>
+                    <div sec:authorize="hasAuthority('SERVICE_ENGINEER')">
                     <input type="radio" th:field="*{processType}" th:value="'maintenance'"/>Maintenance service<br/>
                     <input type="radio" th:field="*{processType}" th:value="'repair'"/>Repair process<br/>
+                    </div>
                     <br>
                     <button class="btn btn-primary mt-3">Continue</button>
                 </form>

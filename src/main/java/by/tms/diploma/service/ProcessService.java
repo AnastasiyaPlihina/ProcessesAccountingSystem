@@ -2,6 +2,7 @@ package by.tms.diploma.service;
 
 import by.tms.diploma.dto.CleaningProcessDto;
 import by.tms.diploma.dto.ProcessDto;
+import by.tms.diploma.dto.ProductionProcessDto;
 import by.tms.diploma.entity.*;
 import by.tms.diploma.exception.EquipmentNotFoundException;
 import by.tms.diploma.exception.ProcessException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,13 +27,14 @@ public class ProcessService {
     @Autowired
     private EquipmentService equipmentService;
 
-    public void saveProcess(AbstractProcess process) {
-        processRepository.save(process);
+    public Optional<AbstractProcess> saveProcess(AbstractProcess process) {
+        return Optional.of(processRepository.save(process));
     }
 
     public CleaningProcess startCleaningProcess(User employee, List<Equipment> equipments, CleaningProcessDto cleaningProcessDto) {
         CleaningProcess cleaningProcess = processMapper.convertCleaningProcessDtoToCleaningProcess(cleaningProcessDto);
-        for (Equipment equipment:equipments) {
+        cleaningProcess.setEquipment(new ArrayList<>());
+        for (Equipment equipment : equipments) {
             equipment.setProcess(true);
             Optional<Equipment> updateEquipment = equipmentService.updateEquipment(equipment);
             cleaningProcess.getEquipment().add(updateEquipment.get());
@@ -41,22 +44,18 @@ public class ProcessService {
         return cleaningProcess;
     }
 
-//    public AbstractProcess createProcess(ProcessDto processDto) {
-//        String processType = processDto.getProcessType();
-//        Optional<Equipment> equipmentByQrCode = equipmentService.findEquipmentByQrCode(processDto.getEquipmentQrCode());
-//        if(equipmentByQrCode.isPresent()) {
-//            Equipment equipment = equipmentByQrCode.get();
-//            return switch (processType) {
-//                case ("cleaning") -> new CleaningProcess(equipment);
-//                case ("production") -> new ProductionProcess(equipment);
-//                case ("maintenance") -> new MaintenanceService(equipment);
-//                case ("repair") -> new RepairProcess(equipment);
-//                default -> throw new ProcessException();
-//            };
-//        } else {
-//            throw new EquipmentNotFoundException();
-//        }
-//    }
+    public ProductionProcess startProductionProcess(User employee, List<Equipment> equipments, ProductionProcessDto productionProcessDto) {
+        ProductionProcess productionProcess = processMapper.convertProductionProcessDtoToProductionProcess(productionProcessDto);
+        productionProcess.setEquipment(new ArrayList<>());
+        for (Equipment equipment : equipments) {
+            equipment.setProcess(true);
+            Optional<Equipment> updateEquipment = equipmentService.updateEquipment(equipment);
+            productionProcess.getEquipment().add(updateEquipment.get());
+        }
+        productionProcess.setEmployee(employee);
+        productionProcess.setProcessStart(LocalDateTime.now());
+        return productionProcess;
+    }
 
 
 }

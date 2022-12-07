@@ -20,6 +20,11 @@ public class ProductionProcess extends AbstractProcess {
         this.seriesNumber = seriesNumber;
     }
 
+    public ProductionProcess(String productName, String seriesNumber) {
+        this.productName = productName;
+        this.seriesNumber = seriesNumber;
+    }
+
     public String getProductName() {
         return productName;
     }

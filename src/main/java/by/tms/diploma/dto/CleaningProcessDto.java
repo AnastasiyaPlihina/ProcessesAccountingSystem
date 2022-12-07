@@ -1,9 +1,7 @@
 package by.tms.diploma.dto;
 
-import by.tms.diploma.entity.Equipment;
 
 public class CleaningProcessDto {
-//    private long equipmentId;
     private String cleaningType;
     private String procedure;
 
@@ -14,15 +12,6 @@ public class CleaningProcessDto {
         this.cleaningType = cleaningType;
         this.procedure = procedure;
     }
-
-    //    public long getEquipmentId() {
-//        return equipmentId;
-//    }
-//
-//    public void setEquipmentId(long equipmentId) {
-//        this.equipmentId = equipmentId;
-//    }
-
     public String getCleaningType() {
         return cleaningType;
     }

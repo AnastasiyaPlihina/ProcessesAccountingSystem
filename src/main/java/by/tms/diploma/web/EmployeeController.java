@@ -2,6 +2,7 @@ package by.tms.diploma.web;
 
 import by.tms.diploma.dto.CleaningProcessDto;
 import by.tms.diploma.dto.ProcessDto;
+import by.tms.diploma.dto.ProductionProcessDto;
 import by.tms.diploma.entity.*;
 import by.tms.diploma.repository.DepartmentRepository;
 import by.tms.diploma.service.DepartmentService;
@@ -58,30 +59,54 @@ public class EmployeeController {
 
     @PostMapping("/selectProcess")
     public String selectProcess(@ModelAttribute ProcessDto processDto, HttpSession httpSession) {
-//        Optional<Equipment> equipmentByQrCode = equipmentService.findEquipmentByQrCode(processDto.getEquipmentQrCode());
-//        httpSession.setAttribute("equipment", equipmentByQrCode.get());
         httpSession.setAttribute("equipmentQrCodeList", processDto.getEquipmentQrCodes());
+        System.out.println(processDto.getProcessType());
         return "redirect:/employee/" + processDto.getProcessType();
     }
 
     @GetMapping("/cleaning")
     public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto, HttpSession httpSession, Model model) {
         List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
-        httpSession.removeAttribute("equipmentQrCodeList");
         List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
         model.addAttribute("equipmentList", equipmentList);
         return "process/cleaning";
     }
 
     @PostMapping("/cleaning")
-    public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto, Model model, HttpServletRequest request) {
-        List<Equipment> equipmentList = (List<Equipment>) model.getAttribute("equipmentList");
+    public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto,HttpSession httpSession, Model model, HttpServletRequest request) {
+        List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
+        List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
+        httpSession.removeAttribute("equipmentQrCodeList");
         String username = request.getRemoteUser();
         Optional<User> userByUsername = userService.findUserByUsername(username);
+        assert equipmentList != null;
         CleaningProcess cleaningProcess = processService.startCleaningProcess(userByUsername.get(), equipmentList, cleaningProcessDto);
-        processService.saveProcess(cleaningProcess);
-//        model.addAttribute("cleaningProcessDto", new CleaningProcess());
-        return "redirect:/";
+        Optional<AbstractProcess> process = processService.saveProcess(cleaningProcess);
+        model.addAttribute("processType", "cleaning");
+        model.addAttribute("process", process.get());
+        return "process/inProcess";
+    }
+    @GetMapping("/production")
+    public String productionProcess(@ModelAttribute ProductionProcessDto productionProcessDto, HttpSession httpSession, Model model) {
+        List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
+        List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
+        model.addAttribute("equipmentList", equipmentList);
+        return "process/production";
+    }
+
+    @PostMapping("/production")
+    public String productionProcess(@ModelAttribute ProductionProcessDto productionProcessDto, HttpSession httpSession, Model model, HttpServletRequest request) {
+        List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
+        List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
+        httpSession.removeAttribute("equipmentQrCodeList");
+        String username = request.getRemoteUser();
+        Optional<User> userByUsername = userService.findUserByUsername(username);
+        assert equipmentList != null;
+        ProductionProcess productionProcess = processService.startProductionProcess(userByUsername.get(), equipmentList, productionProcessDto);
+        Optional<AbstractProcess> process = processService.saveProcess(productionProcess);
+        model.addAttribute("processType", "production");
+        model.addAttribute("process", process.get());
+        return "process/inProcess";
     }
 
 }

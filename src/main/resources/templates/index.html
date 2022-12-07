@@ -63,7 +63,15 @@
                         <button class="btn btn-outline-primary mt-5">Show equipment list</button>
                     </form>
                 </div>
-                <div sec:authorize="hasAuthority('WORKER')">
+                <div sec:authorize="hasAuthority('PRODUCTION_WORKER')">
+                    <form th:action="@{/employee/selectProcess}" method="get">
+                        <button class="btn btn-outline-primary mt-5">Start process</button>
+                    </form>
+                    <form th:action="@{/employee/showEquipmentList}" method="get">
+                        <button class="btn btn-outline-primary mt-5">Show equipment list</button>
+                    </form>
+                </div>
+                <div sec:authorize="hasAuthority('SERVICE_ENGINEER')">
                     <form th:action="@{/employee/selectProcess}" method="get">
                         <button class="btn btn-outline-primary mt-5">Start process</button>
                     </form>

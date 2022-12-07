@@ -16,7 +16,6 @@
             </div>
                 <br>
                 <form th:action="@{/employee/cleaning}" th:object="${cleaningProcessDto}" method="post">
-                    <!--                <input type="hidden" th:field="*{equipmentId}" th:value="${process.equipment.id}"/>-->
                     <div class="mb-3">
                         <label for="cleaningTypeId" class="form-label">Cleaning type: </label>
                         <input type="text" th:field="*{cleaningType}" placeholder="Cleaning type" class="form-control"
