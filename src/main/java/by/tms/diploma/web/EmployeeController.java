@@ -51,7 +51,7 @@ public class EmployeeController {
     public String selectProcess(Model model, HttpServletRequest request) {
         String username = request.getRemoteUser();
         long departmentId = userService.findUserByUsername(username).get().getDepartment().getId();
-        List<Equipment> equipmentOfDepartment = equipmentService.findEquipmentOfDepartment(departmentId);
+        List<Equipment> equipmentOfDepartment = equipmentService.findFreeEquipmentOfDepartment(departmentId);
         model.addAttribute("equipmentList", equipmentOfDepartment);
         model.addAttribute("processDto", new ProcessDto());
         return "employee/startProcess";
@@ -60,7 +60,6 @@ public class EmployeeController {
     @PostMapping("/selectProcess")
     public String selectProcess(@ModelAttribute ProcessDto processDto, HttpSession httpSession) {
         httpSession.setAttribute("equipmentQrCodeList", processDto.getEquipmentQrCodes());
-        System.out.println(processDto.getProcessType());
         return "redirect:/employee/" + processDto.getProcessType();
     }
 
@@ -108,5 +107,9 @@ public class EmployeeController {
         model.addAttribute("process", process.get());
         return "process/inProcess";
     }
-
+    @GetMapping("/stopProcess")
+    public String stopProcess(@RequestParam String equipmentQrCode) {
+        processService.stopProcess(equipmentQrCode);
+        return "redirect:/";
+    }
 }

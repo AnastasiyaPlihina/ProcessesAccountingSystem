@@ -33,7 +33,6 @@ public class EquipmentService {
     public Optional<Equipment> updateEquipment(Equipment equipment) {
         if(equipmentRepository.existsById(equipment.getId())) {
             Equipment updateEquipment = equipmentRepository.save(equipment);
-//            departmentService.updateDepartmentWithEquipment(updateEquipment.getDepartment().getId(), updateEquipment);
             return Optional.of(updateEquipment);
         } else {
             throw new EquipmentNotFoundException();
@@ -55,6 +54,11 @@ public class EquipmentService {
     }
     public List<Equipment> findListOfInternalCodes(List<String> equipmentQrCodeList) {
        return equipmentQrCodeList.stream().map(s -> equipmentRepository.findByQrCode(s).get()).toList();
+    }
+
+    public List<Equipment> findFreeEquipmentOfDepartment(long departmentId) {
+        List<Equipment> equipmentOfDepartment = findEquipmentOfDepartment(departmentId);
+        return equipmentOfDepartment.stream().filter(equipment -> !equipment.isProcess()).toList();
     }
 }
 

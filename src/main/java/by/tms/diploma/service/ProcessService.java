@@ -57,5 +57,25 @@ public class ProcessService {
         return productionProcess;
     }
 
+    public void stopProcess(String equipmentQrCode) {
+        AbstractProcess processByEquipment = findProcessByEquipment(equipmentQrCode);
+        processByEquipment.setProcessEnd(LocalDateTime.now());
+        saveProcess(processByEquipment);
+        Optional<Equipment> equipmentByQrCode = equipmentService.findEquipmentByQrCode(equipmentQrCode);
+        equipmentByQrCode.get().setProcess(false);
+        equipmentService.updateEquipment(equipmentByQrCode.get());
+    }
 
+    private AbstractProcess findProcessByEquipment(String equipmentQrCode) {
+        List<AbstractProcess> unfinishedProcesses = processRepository.findUnfinishedProcesses();
+        for (AbstractProcess process : unfinishedProcesses) {
+            List<Equipment> equipment = process.getEquipment();
+            for (Equipment e : equipment) {
+                if (e.getQrCode().equals(equipmentQrCode)) {
+                    return process;
+                }
+            }
+        }
+        throw new ProcessException();
+    }
 }
