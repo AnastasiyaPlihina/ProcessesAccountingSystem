@@ -1,5 +1,6 @@
 package by.tms.diploma.service;
 
+import by.tms.diploma.dto.AbstractProcessDto;
 import by.tms.diploma.dto.CleaningProcessDto;
 import by.tms.diploma.dto.ProcessDto;
 import by.tms.diploma.dto.ProductionProcessDto;
@@ -77,5 +78,19 @@ public class ProcessService {
             }
         }
         throw new ProcessException();
+    }
+    public List<AbstractProcessDto> findProcessListByEquipment(String equipmentQrCode) {
+        List<AbstractProcess> allProcesses = processRepository.findAll();
+        List<AbstractProcessDto> equipmentProcess = new ArrayList<>();
+        for (AbstractProcess process : allProcesses) {
+            List<Equipment> equipment = process.getEquipment();
+            for (Equipment e : equipment) {
+                if (e.getQrCode().equals(equipmentQrCode)) {
+                    AbstractProcessDto abstractProcessDto = processMapper.convertAbstractProcessToAbstractProcessDto(process);
+                    equipmentProcess.add(abstractProcessDto);
+                }
+            }
+        }
+        return equipmentProcess;
     }
 }
