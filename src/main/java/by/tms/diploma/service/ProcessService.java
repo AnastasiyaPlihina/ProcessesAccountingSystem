@@ -3,6 +3,7 @@ package by.tms.diploma.service;
 import by.tms.diploma.dto.*;
 import by.tms.diploma.entity.*;
 import by.tms.diploma.exception.ProcessException;
+import by.tms.diploma.exception.StartProcessException;
 import by.tms.diploma.mapper.ProcessMapper;
 import by.tms.diploma.repository.ProcessRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,14 +62,6 @@ public class ProcessService {
         return qualificationProcess;
     }
 
-    private void setEquipmentListToStartProcess(AbstractProcess process, List<Equipment> equipments) {
-        process.setEquipment(new ArrayList<>());
-        for (Equipment equipment : equipments) {
-            equipment.setProcess(true);
-            Optional<Equipment> updateEquipment = equipmentService.updateEquipment(equipment);
-            process.getEquipment().add(updateEquipment.get());
-        }
-    }
 
     public void stopProcess(String equipmentQrCode) {
         AbstractProcess processByEquipment = findProcessByEquipment(equipmentQrCode);
@@ -80,23 +73,10 @@ public class ProcessService {
         if (processByEquipment instanceof MaintenanceService) {
             equipment.setLastMaintenanceServiceDate(LocalDate.now());
         }
-        if(processByEquipment instanceof QualificationProcess) {
+        if (processByEquipment instanceof QualificationProcess) {
             equipment.setLastQualificationDate(LocalDate.now());
         }
         equipmentService.updateEquipment(equipmentByQrCode.get());
-    }
-
-    private AbstractProcess findProcessByEquipment(String equipmentQrCode) {
-        List<AbstractProcess> unfinishedProcesses = processRepository.findUnfinishedProcesses();
-        for (AbstractProcess process : unfinishedProcesses) {
-            List<Equipment> equipment = process.getEquipment();
-            for (Equipment e : equipment) {
-                if (e.getQrCode().equals(equipmentQrCode)) {
-                    return process;
-                }
-            }
-        }
-        throw new ProcessException();
     }
 
     public List<AbstractProcessDto> findProcessListByEquipment(String equipmentQrCode) {
@@ -114,5 +94,34 @@ public class ProcessService {
         return equipmentProcess;
     }
 
+    private void setEquipmentListToStartProcess(AbstractProcess process, List<Equipment> equipments) {
+        process.setEquipment(new ArrayList<>());
+        for (Equipment equipment : equipments) {
+            List<AbstractProcessDto> processListByEquipment = findProcessListByEquipment(equipment.getQrCode());
+            AbstractProcessDto abstractProcessDto = new AbstractProcessDto();
+            if(!processListByEquipment.isEmpty()){
+                abstractProcessDto = processListByEquipment.get(processListByEquipment.size() - 1);
+            }
+            if (processListByEquipment.isEmpty() || (abstractProcessDto.getProcessEnd() != null && abstractProcessDto.getCleaningType() != null)) {
+                equipment.setProcess(true);
+                Optional<Equipment> updateEquipment = equipmentService.updateEquipment(equipment);
+                process.getEquipment().add(updateEquipment.get());
+            } else {
+                throw new StartProcessException();
+            }
+        }
+    }
 
+    private AbstractProcess findProcessByEquipment(String equipmentQrCode) {
+        List<AbstractProcess> unfinishedProcesses = processRepository.findUnfinishedProcesses();
+        for (AbstractProcess process : unfinishedProcesses) {
+            List<Equipment> equipment = process.getEquipment();
+            for (Equipment e : equipment) {
+                if (e.getQrCode().equals(equipmentQrCode)) {
+                    return process;
+                }
+            }
+        }
+        throw new ProcessException();
+    }
 }

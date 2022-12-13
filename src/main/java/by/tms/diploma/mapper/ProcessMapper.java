@@ -30,6 +30,10 @@ public class ProcessMapper {
         } else if (process instanceof ProductionProcess) {
             abstractProcessDto.setProductName(((ProductionProcess) process).getProductName());
             abstractProcessDto.setSeriesNumber(((ProductionProcess) process).getSeriesNumber());
+        } else if (process instanceof MaintenanceService) {
+            abstractProcessDto.setMaintenanceInstruction(((MaintenanceService) process).getMaintenanceInstruction());
+        } else {
+            abstractProcessDto.setQualificationDescription(((QualificationProcess) process).getDescription());
         }
         return abstractProcessDto;
     }

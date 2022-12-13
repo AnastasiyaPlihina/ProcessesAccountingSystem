@@ -12,6 +12,8 @@ public class AbstractProcessDto {
     private String procedure;
     private String productName;
     private String seriesNumber;
+    private String maintenanceInstruction;
+    private String qualificationDescription;
 
     public AbstractProcessDto() {
     }
@@ -76,5 +78,21 @@ public class AbstractProcessDto {
 
     public void setSeriesNumber(String seriesNumber) {
         this.seriesNumber = seriesNumber;
+    }
+
+    public String getMaintenanceInstruction() {
+        return maintenanceInstruction;
+    }
+
+    public void setMaintenanceInstruction(String maintenanceInstruction) {
+        this.maintenanceInstruction = maintenanceInstruction;
+    }
+
+    public String getQualificationDescription() {
+        return qualificationDescription;
+    }
+
+    public void setQualificationDescription(String qualificationDescription) {
+        this.qualificationDescription = qualificationDescription;
     }
 }
