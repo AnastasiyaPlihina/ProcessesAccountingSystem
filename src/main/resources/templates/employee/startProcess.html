@@ -9,29 +9,38 @@
 <body>
 <div class="container">
     <div class="row mt-5">
-            <div class="col">
+        <div class="col">
+            <div th:if="${equipmentList.isEmpty()}">
+                <h2>No free equipment to start process!</h2>
+                <br>
+            </div>
+            <div th:if="${!equipmentList.isEmpty()}">
                 <h3>Select equipment and kind of process:</h3>
                 <br>
                 <form th:action="@{/employee/selectProcess}" th:object="${processDto}" method="post">
                     <p>Select equipment: </p>
                     <div th:each="equipmentOpt : ${equipmentList}">
                         <input type="checkbox" th:field="*{equipmentQrCodes}" th:value="${equipmentOpt.qrCode}"/>
-                        <label th:text="${equipmentOpt.internalCode}" ></label>
+                        <label th:text="${equipmentOpt.internalCode}"></label>
                         <br>
                     </div>
                     <p>Select kind of process: </p>
                     <div sec:authorize="hasAuthority('PRODUCTION_WORKER')">
-                    <input type="radio" th:field="*{processType}" th:value="'cleaning'"/>Cleaning process<br/>
-                    <input type="radio" th:field="*{processType}" th:value="'production'"/>Production process<br/>
+                        <input type="radio" th:field="*{processType}" th:value="'cleaning'"/>Cleaning process<br/>
+                        <input type="radio" th:field="*{processType}" th:value="'production'"/>Production process<br/>
                     </div>
                     <div sec:authorize="hasAuthority('SERVICE_ENGINEER')">
-                    <input type="radio" th:field="*{processType}" th:value="'maintenance'"/>Maintenance service<br/>
-                    <input type="radio" th:field="*{processType}" th:value="'qualification'"/>Qualification process<br/>
+                        <input type="radio" th:field="*{processType}" th:value="'maintenance'"/>Maintenance service<br/>
+                        <input type="radio" th:field="*{processType}" th:value="'qualification'"/>Qualification
+                        process<br/>
                     </div>
                     <br>
                     <button class="btn btn-primary mt-3">Continue</button>
                 </form>
             </div>
+            <form th:action="@{/}">
+                <button class="btn btn-secondary">Back to start page</button>
+            </form>
         </div>
     </div>
 </div>

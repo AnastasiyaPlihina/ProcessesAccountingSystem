@@ -5,6 +5,8 @@ import by.tms.diploma.entity.Equipment;
 import by.tms.diploma.exception.EquipmentNotFoundException;
 import by.tms.diploma.exception.SaveException;
 import by.tms.diploma.repository.EquipmentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,16 +17,22 @@ import java.util.Optional;
 @Service
 @Transactional
 public class EquipmentService {
+    private static final Logger logger = LoggerFactory.getLogger(EquipmentService.class);
 
-    @Autowired
-    private EquipmentRepository equipmentRepository;
-    @Autowired
-    private DepartmentService departmentService;
+    private final EquipmentRepository equipmentRepository;
+
+    private final DepartmentService departmentService;
+
+    public EquipmentService(EquipmentRepository equipmentRepository, DepartmentService departmentService) {
+        this.equipmentRepository = equipmentRepository;
+        this.departmentService = departmentService;
+    }
 
     public Optional<Equipment> saveEquipment(Equipment equipment) {
         if(!equipmentRepository.existsById(equipment.getId())) {
             Equipment saveEquipment = equipmentRepository.save(equipment);
             departmentService.updateDepartmentWithEquipment(saveEquipment.getDepartment().getId(), saveEquipment);
+            logger.info("save equipment " + saveEquipment.getInternalCode());
             return Optional.of(saveEquipment);
         } else {
             throw new SaveException();
@@ -33,6 +41,7 @@ public class EquipmentService {
     public Optional<Equipment> updateEquipment(Equipment equipment) {
         if(equipmentRepository.existsById(equipment.getId())) {
             Equipment updateEquipment = equipmentRepository.save(equipment);
+            logger.info("update equipment " + updateEquipment.getInternalCode());
             return Optional.of(updateEquipment);
         } else {
             throw new EquipmentNotFoundException();

@@ -27,30 +27,49 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private EquipmentService equipmentService;
-    @Autowired
-    private ProcessService processService;
-    @Autowired
-    private DepartmentService departmentService;
+
+    private final UserService userService;
+
+    private final EquipmentService equipmentService;
+
+    private final ProcessService processService;
+
+    private final DepartmentService departmentService;
+
+    public EmployeeController(UserService userService, EquipmentService equipmentService, ProcessService processService, DepartmentService departmentService) {
+        this.userService = userService;
+        this.equipmentService = equipmentService;
+        this.processService = processService;
+        this.departmentService = departmentService;
+    }
 
     @GetMapping("/showEquipmentList")
     public String showEquipmentList(HttpServletRequest request, Model model) {
         String username = request.getRemoteUser();
-        Optional<Department> departmentById = departmentService.findDepartmentById(userService.findUserByUsername(username).get().getDepartment().getId());
-        List<Equipment> equipmentOfDepartment = equipmentService.findEquipmentOfDepartment(departmentById.get().getId());
-        model.addAttribute("equipmentList", equipmentOfDepartment);
+        User user = userService.findUserByUsername(username).get();
+        List<Equipment> equipmentList = new ArrayList<>();
+        if(user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
+            equipmentList = equipmentService.findAllEquipment();
+        } else {
+            long departmentId = user.getDepartment().getId();
+            equipmentList = equipmentService.findEquipmentOfDepartment(departmentId);
+        }
+        model.addAttribute("equipmentList", equipmentList);
         return "employee/equipmentList";
     }
 
     @GetMapping("/selectProcess")
     public String selectProcess(Model model, HttpServletRequest request) {
         String username = request.getRemoteUser();
-        long departmentId = userService.findUserByUsername(username).get().getDepartment().getId();
-        List<Equipment> equipmentOfDepartment = equipmentService.findFreeEquipmentOfDepartment(departmentId);
-        model.addAttribute("equipmentList", equipmentOfDepartment);
+        User user = userService.findUserByUsername(username).get();
+        List<Equipment> equipmentList = new ArrayList<>();
+        if(user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
+            equipmentList = equipmentService.findAllEquipment();
+        } else {
+            long departmentId = user.getDepartment().getId();
+            equipmentList = equipmentService.findFreeEquipmentOfDepartment(departmentId);
+        }
+        model.addAttribute("equipmentList", equipmentList);
         model.addAttribute("processDto", new ProcessDto());
         return "employee/startProcess";
     }

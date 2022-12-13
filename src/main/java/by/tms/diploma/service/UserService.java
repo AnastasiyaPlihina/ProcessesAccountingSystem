@@ -6,6 +6,8 @@ import by.tms.diploma.entity.User;
 import by.tms.diploma.exception.SaveException;
 import by.tms.diploma.mapper.UserMapper;
 import by.tms.diploma.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,13 +22,21 @@ import java.util.Set;
 @Service
 @Transactional
 public class UserService implements UserDetailsService {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private DepartmentService departmentService;
-    @Autowired
-    private UserMapper userMapper;
+
+    private final UserRepository userRepository;
+
+    private final DepartmentService departmentService;
+
+    private final UserMapper userMapper;
+
+    public UserService(UserRepository userRepository, DepartmentService departmentService, UserMapper userMapper) {
+        this.userRepository = userRepository;
+        this.departmentService = departmentService;
+        this.userMapper = userMapper;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> byUsername = userRepository.findByUsername(username);
@@ -44,6 +54,7 @@ public class UserService implements UserDetailsService {
             userRepository.save(superAdmin);
         }
     }
+
     public void saveAuditor() {
         if (!userRepository.existsByUsername("auditor")) {
             User auditor = new User("auditor", encoder.encode("auditor"), Set.of(Role.AUDITOR));
@@ -56,12 +67,14 @@ public class UserService implements UserDetailsService {
         if (!userRepository.existsById(user.getId())) {
             user.setPassword(encoder.encode(user.getPassword()));
             User saveUser = userRepository.save(user);
+            logger.info(saveUser.getFirstName() + " " + saveUser.getSecondName() + " was saved");
             departmentService.updateDepartmentWithEmployee(saveUser.getDepartment().getId(), saveUser);
             return Optional.of(saveUser);
         } else {
             throw new SaveException();
         }
     }
+
     public Optional<User> findUserByUsername(String username) {
         Optional<User> byUsername = userRepository.findByUsername(username);
         if (byUsername.isPresent()) {
