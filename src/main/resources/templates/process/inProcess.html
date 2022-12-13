@@ -37,6 +37,32 @@
     <br>
     <p th:text="'Start: ' + ${process.processStart}"></p>
 </div>
+<div th:if="${processType.equals('maintenance')}">
+    <p>Maintenance service</p>
+    <br>
+    <p>Equipment list:</p>
+    <div th:each="equipment:${process.equipment}">
+        <p th:text="${equipment.internalCode}"></p>
+    </div>
+    <p th:text="'Employee :' + ${process.employee.firstName} + ' ' + ${process.employee.secondName}"></p>
+    <br>
+    <p th:text="'Maintenance instruction: ' + ${process.maintenanceInstruction}"></p>
+    <br>
+    <p th:text="'Start: ' + ${process.processStart}"></p>
+</div>
+<div th:if="${processType.equals('qualification')}">
+    <p>Maintenance service</p>
+    <br>
+    <p>Equipment list:</p>
+    <div th:each="equipment:${process.equipment}">
+        <p th:text="${equipment.internalCode}"></p>
+    </div>
+    <p th:text="'Employee :' + ${process.employee.firstName} + ' ' + ${process.employee.secondName}"></p>
+    <br>
+    <p th:text="'Description: ' + ${process.description}"></p>
+    <br>
+    <p th:text="'Start: ' + ${process.processStart}"></p>
+</div>
 <br>
 <form th:action="@{/}">
     <button class="btn btn-secondary">Back to start page</button>

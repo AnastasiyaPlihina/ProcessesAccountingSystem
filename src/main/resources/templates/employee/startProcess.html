@@ -26,7 +26,7 @@
                     </div>
                     <div sec:authorize="hasAuthority('SERVICE_ENGINEER')">
                     <input type="radio" th:field="*{processType}" th:value="'maintenance'"/>Maintenance service<br/>
-                    <input type="radio" th:field="*{processType}" th:value="'repair'"/>Repair process<br/>
+                    <input type="radio" th:field="*{processType}" th:value="'qualification'"/>Qualification process<br/>
                     </div>
                     <br>
                     <button class="btn btn-primary mt-3">Continue</button>

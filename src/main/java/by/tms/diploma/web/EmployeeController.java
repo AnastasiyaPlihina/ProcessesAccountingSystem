@@ -1,8 +1,6 @@
 package by.tms.diploma.web;
 
-import by.tms.diploma.dto.CleaningProcessDto;
-import by.tms.diploma.dto.ProcessDto;
-import by.tms.diploma.dto.ProductionProcessDto;
+import by.tms.diploma.dto.*;
 import by.tms.diploma.entity.*;
 import by.tms.diploma.repository.DepartmentRepository;
 import by.tms.diploma.service.DepartmentService;
@@ -107,6 +105,52 @@ public class EmployeeController {
         model.addAttribute("process", process.get());
         return "process/inProcess";
     }
+
+    @GetMapping("/maintenance")
+    public String maintenanceService(@ModelAttribute MaintenanceServiceDto maintenanceServiceDto, HttpSession httpSession, Model model) {
+        List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
+        List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
+        model.addAttribute("equipmentList", equipmentList);
+        return "process/maintenance";
+    }
+
+    @PostMapping("/maintenance")
+    public String maintenanceService(@ModelAttribute MaintenanceServiceDto maintenanceServiceDto,HttpSession httpSession, Model model, HttpServletRequest request) {
+        List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
+        List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
+        httpSession.removeAttribute("equipmentQrCodeList");
+        String username = request.getRemoteUser();
+        Optional<User> userByUsername = userService.findUserByUsername(username);
+        assert equipmentList != null;
+        MaintenanceService maintenanceService = processService.startMaintenanceService(userByUsername.get(), equipmentList, maintenanceServiceDto);
+        Optional<AbstractProcess> process = processService.saveProcess(maintenanceService);
+        model.addAttribute("processType", "maintenance");
+        model.addAttribute("process", process.get());
+        return "process/inProcess";
+    }
+    @GetMapping("/qualification")
+    public String qualificationProcess(@ModelAttribute QualificationProcessDto qualificationProcessDto, HttpSession httpSession, Model model) {
+        List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
+        List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
+        model.addAttribute("equipmentList", equipmentList);
+        return "process/qualification";
+    }
+
+    @PostMapping("/qualification")
+    public String qualificationProcess(@ModelAttribute QualificationProcessDto qualificationProcessDto,HttpSession httpSession, Model model, HttpServletRequest request) {
+        List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
+        List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
+        httpSession.removeAttribute("equipmentQrCodeList");
+        String username = request.getRemoteUser();
+        Optional<User> userByUsername = userService.findUserByUsername(username);
+        assert equipmentList != null;
+        QualificationProcess qualificationProcess = processService.startQualificationProcess(userByUsername.get(), equipmentList, qualificationProcessDto);
+        Optional<AbstractProcess> process = processService.saveProcess(qualificationProcess);
+        model.addAttribute("processType", "qualification");
+        model.addAttribute("process", process.get());
+        return "process/inProcess";
+    }
+
     @GetMapping("/stopProcess")
     public String stopProcess(@RequestParam String equipmentQrCode) {
         processService.stopProcess(equipmentQrCode);

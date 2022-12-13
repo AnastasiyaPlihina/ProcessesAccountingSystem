@@ -1,11 +1,7 @@
 package by.tms.diploma.service;
 
-import by.tms.diploma.dto.AbstractProcessDto;
-import by.tms.diploma.dto.CleaningProcessDto;
-import by.tms.diploma.dto.ProcessDto;
-import by.tms.diploma.dto.ProductionProcessDto;
+import by.tms.diploma.dto.*;
 import by.tms.diploma.entity.*;
-import by.tms.diploma.exception.EquipmentNotFoundException;
 import by.tms.diploma.exception.ProcessException;
 import by.tms.diploma.mapper.ProcessMapper;
 import by.tms.diploma.repository.ProcessRepository;
@@ -13,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +31,7 @@ public class ProcessService {
 
     public CleaningProcess startCleaningProcess(User employee, List<Equipment> equipments, CleaningProcessDto cleaningProcessDto) {
         CleaningProcess cleaningProcess = processMapper.convertCleaningProcessDtoToCleaningProcess(cleaningProcessDto);
-        cleaningProcess.setEquipment(new ArrayList<>());
-        for (Equipment equipment : equipments) {
-            equipment.setProcess(true);
-            Optional<Equipment> updateEquipment = equipmentService.updateEquipment(equipment);
-            cleaningProcess.getEquipment().add(updateEquipment.get());
-        }
+        setEquipmentListToStartProcess(cleaningProcess, equipments);
         cleaningProcess.setEmployee(employee);
         cleaningProcess.setProcessStart(LocalDateTime.now());
         return cleaningProcess;
@@ -47,15 +39,35 @@ public class ProcessService {
 
     public ProductionProcess startProductionProcess(User employee, List<Equipment> equipments, ProductionProcessDto productionProcessDto) {
         ProductionProcess productionProcess = processMapper.convertProductionProcessDtoToProductionProcess(productionProcessDto);
-        productionProcess.setEquipment(new ArrayList<>());
-        for (Equipment equipment : equipments) {
-            equipment.setProcess(true);
-            Optional<Equipment> updateEquipment = equipmentService.updateEquipment(equipment);
-            productionProcess.getEquipment().add(updateEquipment.get());
-        }
+        setEquipmentListToStartProcess(productionProcess, equipments);
         productionProcess.setEmployee(employee);
         productionProcess.setProcessStart(LocalDateTime.now());
         return productionProcess;
+    }
+
+    public MaintenanceService startMaintenanceService(User employee, List<Equipment> equipments, MaintenanceServiceDto maintenanceServiceDto) {
+        MaintenanceService maintenanceService = processMapper.convertMaintenanceServiceDtoToMaintenanceService(maintenanceServiceDto);
+        setEquipmentListToStartProcess(maintenanceService, equipments);
+        maintenanceService.setEmployee(employee);
+        maintenanceService.setProcessStart(LocalDateTime.now());
+        return maintenanceService;
+    }
+
+    public QualificationProcess startQualificationProcess(User employee, List<Equipment> equipments, QualificationProcessDto qualificationProcessDto) {
+        QualificationProcess qualificationProcess = processMapper.convertQualificationProcessDtoToQualificationProcess(qualificationProcessDto);
+        setEquipmentListToStartProcess(qualificationProcess, equipments);
+        qualificationProcess.setEmployee(employee);
+        qualificationProcess.setProcessStart(LocalDateTime.now());
+        return qualificationProcess;
+    }
+
+    private void setEquipmentListToStartProcess(AbstractProcess process, List<Equipment> equipments) {
+        process.setEquipment(new ArrayList<>());
+        for (Equipment equipment : equipments) {
+            equipment.setProcess(true);
+            Optional<Equipment> updateEquipment = equipmentService.updateEquipment(equipment);
+            process.getEquipment().add(updateEquipment.get());
+        }
     }
 
     public void stopProcess(String equipmentQrCode) {
@@ -63,7 +75,14 @@ public class ProcessService {
         processByEquipment.setProcessEnd(LocalDateTime.now());
         saveProcess(processByEquipment);
         Optional<Equipment> equipmentByQrCode = equipmentService.findEquipmentByQrCode(equipmentQrCode);
-        equipmentByQrCode.get().setProcess(false);
+        Equipment equipment = equipmentByQrCode.get();
+        equipment.setProcess(false);
+        if (processByEquipment instanceof MaintenanceService) {
+            equipment.setLastMaintenanceServiceDate(LocalDate.now());
+        }
+        if(processByEquipment instanceof QualificationProcess) {
+            equipment.setLastQualificationDate(LocalDate.now());
+        }
         equipmentService.updateEquipment(equipmentByQrCode.get());
     }
 
@@ -79,6 +98,7 @@ public class ProcessService {
         }
         throw new ProcessException();
     }
+
     public List<AbstractProcessDto> findProcessListByEquipment(String equipmentQrCode) {
         List<AbstractProcess> allProcesses = processRepository.findAll();
         List<AbstractProcessDto> equipmentProcess = new ArrayList<>();
@@ -93,4 +113,6 @@ public class ProcessService {
         }
         return equipmentProcess;
     }
+
+
 }

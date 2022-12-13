@@ -11,22 +11,25 @@ import java.util.List;
 @DiscriminatorValue("MP")
 public class MaintenanceService extends AbstractProcess {
 
-    @ElementCollection
-    private List<String> servicedItems;
+    private String maintenanceInstruction;
 
     public MaintenanceService() {
     }
 
-    public MaintenanceService(List<Equipment> equipment, User employee, List<String> servicedItems) {
+    public MaintenanceService(String maintenanceInstruction) {
+        this.maintenanceInstruction = maintenanceInstruction;
+    }
+
+    public MaintenanceService(List<Equipment> equipment, User employee, String maintenanceInstruction) {
         super(equipment, employee);
-        this.servicedItems = servicedItems;
+        this.maintenanceInstruction = maintenanceInstruction;
     }
 
-    public List<String> getServicedItems() {
-        return servicedItems;
+    public String getMaintenanceInstruction() {
+        return maintenanceInstruction;
     }
 
-    public void setServicedItems(List<String> servicedItems) {
-        this.servicedItems = servicedItems;
+    public void setMaintenanceInstruction(String maintenanceInstruction) {
+        this.maintenanceInstruction = maintenanceInstruction;
     }
 }
