@@ -25,22 +25,12 @@
                     <input type="text" th:field="*{secondName}" placeholder="Employee's second name"
                            class="form-control" id="employeeSecondName"/>
                 </div>
-                <div sec:authorize="hasAuthority('ADMIN')">
-                    <div class="mb-3">
-                        <label for="departmentSelect">Select employee's department: </label>
-                        <select class="form-select" name="department.id" id="departmentSelect">
-                            <option th:each="departmentOpt : ${departments}"
-                                    th:value="${departmentOpt.id}" th:text="${departmentOpt.name}"></option>
-                        </select>
-                    </div>
-                </div>
-                <div sec:authorize="hasAuthority('HEAD_OF_DEPARTMENT')">
-                    <div class="mb-3">
-                        <label for="department">Employee's department: </label>
-                        <select class="form-select" name="department.id" id="department">
-                            <option th:value="${department.id}" th:text="${department.name}"></option>
-                        </select>
-                    </div>
+                <div class="mb-3">
+                    <label for="departmentSelect">Select employee's department: </label>
+                    <select class="form-select" name="department.id" id="departmentSelect">
+                        <option th:each="departmentOpt : ${departments}"
+                                th:value="${departmentOpt.id}" th:text="${departmentOpt.name}"></option>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="employeeUsername" class="form-label">Employee's username: </label>
@@ -56,11 +46,16 @@
                     <label for="roleSelect">Select employee's role: </label>
                     <div id="roleSelect">
                         <div sec:authorize="hasAuthority('ADMIN')">
-                            <input type="checkbox" th:field="*{roles}" th:value="${T(by.tms.diploma.entity.Role).ADMIN}"/>ADMIN<br/>
-                            <input type="checkbox" th:field="*{roles}" th:value="${T(by.tms.diploma.entity.Role).HEAD_OF_DEPARTMENT}"/>HEAD OF DEPARTMENT<br/>
+                            <input type="checkbox" th:field="*{roles}"
+                                   th:value="${T(by.tms.diploma.entity.Role).ADMIN}"/>ADMIN<br/>
+                            <input type="checkbox" th:field="*{roles}"
+                                   th:value="${T(by.tms.diploma.entity.Role).HEAD_OF_DEPARTMENT}"/>HEAD OF
+                            DEPARTMENT<br/>
                         </div>
-                        <input type="checkbox" th:field="*{roles}" th:value="${T(by.tms.diploma.entity.Role).PRODUCTION_WORKER}"/>PRODUCTION WORKER<br/>
-                        <input type="checkbox" th:field="*{roles}" th:value="${T(by.tms.diploma.entity.Role).SERVICE_ENGINEER}"/>SERVICE ENGINEER<br/>
+                        <input type="checkbox" th:field="*{roles}"
+                               th:value="${T(by.tms.diploma.entity.Role).PRODUCTION_WORKER}"/>PRODUCTION WORKER<br/>
+                        <input type="checkbox" th:field="*{roles}"
+                               th:value="${T(by.tms.diploma.entity.Role).SERVICE_ENGINEER}"/>SERVICE ENGINEER<br/>
                         <br>
                     </div>
                 </div>

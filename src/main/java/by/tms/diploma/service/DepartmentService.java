@@ -51,5 +51,8 @@ public class DepartmentService {
         logger.info("update department " + department.getName());
         departmentRepository.save(department);
     }
+    public void updateDepartment(Department department) {
+        departmentRepository.save(department);
+    }
 }
 

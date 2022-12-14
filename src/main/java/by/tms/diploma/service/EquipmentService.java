@@ -69,5 +69,13 @@ public class EquipmentService {
         List<Equipment> equipmentOfDepartment = findEquipmentOfDepartment(departmentId);
         return equipmentOfDepartment.stream().filter(equipment -> !equipment.isProcess()).toList();
     }
+
+    public void deleteEquipment(long id) {
+        Optional<Equipment> equipmentById = equipmentRepository.findById(id);
+        equipmentRepository.deleteById(id);
+        Department department = equipmentById.get().getDepartment();
+        department.getEquipmentList().remove(equipmentById.get());
+        departmentService.updateDepartment(department);
+    }
 }
 

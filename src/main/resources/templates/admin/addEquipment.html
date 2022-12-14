@@ -44,22 +44,12 @@
                            placeholder="Equipment's technical characteristic" class="form-control"
                            id="equipmentTechnicalCharacteristic"/>
                 </div>
-                <div sec:authorize="hasAuthority('ADMIN')">
-                    <div class="mb-3">
-                        <label for="departmentSelect">Select department: </label>
-                        <select class="form-select" name="department.id" id="departmentSelect">
-                            <option th:each="departmentOpt : ${departments}"
-                                    th:value="${departmentOpt.id}" th:text="${departmentOpt.name}"></option>
-                        </select>
-                    </div>
-                </div>
-                <div sec:authorize="hasAuthority('HEAD_OF_DEPARTMENT')">
-                    <div class="mb-3">
-                        <label for="department">Employee's department: </label>
-                        <select class="form-select" name="department.id" id="department">
-                            <option th:value="${department.id}" th:text="${department.name}"></option>
-                        </select>
-                    </div>
+                <div class="mb-3">
+                    <label for="departmentSelect">Select department: </label>
+                    <select class="form-select" name="department.id" id="departmentSelect">
+                        <option th:each="departmentOpt : ${departments}"
+                                th:value="${departmentOpt.id}" th:text="${departmentOpt.name}"></option>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="equipmentLastQualificationDate" class="form-label">Equipment's last qualification

@@ -1,6 +1,7 @@
 package by.tms.diploma.service;
 
 import by.tms.diploma.dto.UserDto;
+import by.tms.diploma.entity.Department;
 import by.tms.diploma.entity.Role;
 import by.tms.diploma.entity.User;
 import by.tms.diploma.exception.SaveException;
@@ -87,5 +88,16 @@ public class UserService implements UserDetailsService {
 
     public List<User> findAllEmployees() {
        return userRepository.findAllEmployees();
+    }
+    public List<User> findEmployeesOfDepartment(long departmentId) {
+        return userRepository.findByDepartment(departmentId);
+    }
+
+    public void deleteEmployee(long id) {
+        Optional<User> userById = userRepository.findById(id);
+        userRepository.deleteById(id);
+        Department department = userById.get().getDepartment();
+        department.getEmployees().remove(userById.get());
+        departmentService.updateDepartment(department);
     }
 }

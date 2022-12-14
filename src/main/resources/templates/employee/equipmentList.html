@@ -49,7 +49,7 @@
                     </form>
                 </td>
                 <td>
-                    <form th:action="@{/admin/deleteEquipment}" method="get">
+                    <form th:action="@{/admin/{id}/deleteEquipment (id = ${equipment.id})}" method="post">
                         <button class="btn btn-outline-danger mt-5">Delete equipment</button>
                     </form>
                 </td>

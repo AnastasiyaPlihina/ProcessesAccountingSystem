@@ -13,5 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(String username);
     @Query(value = "select * from users where department_id is not null", nativeQuery = true)
     List<User> findAllEmployees();
-
+    @Query(value = "select * from users where department_id =:departmentId", nativeQuery = true)
+    List<User> findByDepartment(long departmentId);
 }

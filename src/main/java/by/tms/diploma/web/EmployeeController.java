@@ -44,7 +44,7 @@ public class EmployeeController {
     public String showEquipmentList(HttpServletRequest request, Model model) {
         String username = request.getRemoteUser();
         User user = userService.findUserByUsername(username).get();
-        List<Equipment> equipmentList = new ArrayList<>();
+        List<Equipment> equipmentList;
         if(user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
             equipmentList = equipmentService.findAllEquipment();
         } else {
