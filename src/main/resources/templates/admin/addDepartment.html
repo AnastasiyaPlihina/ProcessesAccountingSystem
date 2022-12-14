@@ -14,7 +14,7 @@
                 <p th:text="${departmentName} + ' department was added!'"></p>
                 <br>
             </div>
-            <form th:action="@{/admin/addDepartment}" th:object="${newDepartment}" method="post">
+            <form th:action="@{/admin/addDepartment}" th:object="${department}" method="post">
                 <div class="mb-3">
                     <label for="departmentName" class="form-label">Department's name: </label>
                     <input type="text" th:field="*{name}" placeholder="Department's name" class="form-control" id="departmentName"/>

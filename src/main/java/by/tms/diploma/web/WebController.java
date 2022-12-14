@@ -22,12 +22,16 @@ import java.util.Optional;
 @Controller
 @RequestMapping
 public class WebController {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private EquipmentService equipmentService;
-    @Autowired
-    private ProcessService processService;
+
+    private final UserService userService;
+    private final EquipmentService equipmentService;
+    private final ProcessService processService;
+
+    public WebController(UserService userService, EquipmentService equipmentService, ProcessService processService) {
+        this.userService = userService;
+        this.equipmentService = equipmentService;
+        this.processService = processService;
+    }
 
     @GetMapping
     public String startPage(Model model) {

@@ -29,11 +29,8 @@ import java.util.Optional;
 public class EmployeeController {
 
     private final UserService userService;
-
     private final EquipmentService equipmentService;
-
     private final ProcessService processService;
-
     private final DepartmentService departmentService;
 
     public EmployeeController(UserService userService, EquipmentService equipmentService, ProcessService processService, DepartmentService departmentService) {

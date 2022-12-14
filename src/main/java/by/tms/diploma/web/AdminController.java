@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
@@ -23,34 +24,51 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-    @Autowired
-    private DepartmentService departmentService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private EquipmentService equipmentService;
-    @Autowired
-    private EquipmentMapper equipmentMapper;
 
+    private final DepartmentService departmentService;
+
+    private final UserService userService;
+
+    private final EquipmentService equipmentService;
+
+    private final EquipmentMapper equipmentMapper;
+
+    public AdminController(DepartmentService departmentService, UserService userService, EquipmentService equipmentService, EquipmentMapper equipmentMapper) {
+        this.departmentService = departmentService;
+        this.userService = userService;
+        this.equipmentService = equipmentService;
+        this.equipmentMapper = equipmentMapper;
+    }
+    @GetMapping("/showEmployeeList")
+    public String showEmployeeList(Model model) {
+        List<User> employeeList = userService.findAllEmployees();
+        model.addAttribute("employeeList", employeeList);
+        return "employeeList";
+    }
     @GetMapping("/addDepartment")
-    public String addDepartment(@ModelAttribute("newDepartment") Department department) {
+    public String addDepartment(@ModelAttribute Department department) {
         return "admin/addDepartment";
     }
 
     @PostMapping("/addDepartment")
-    public String addDepartment(@Valid @ModelAttribute("newDepartment") Department department,
+    public String addDepartment(@Valid @ModelAttribute Department department,
                                 BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "admin/addDepartment";
         }
         departmentService.saveDepartment(department);
         model.addAttribute("departmentName", department.getName());
-        model.addAttribute("newDepartment", new Department());
+        model.addAttribute("department", new Department());
         return "admin/addDepartment";
     }
 
     @GetMapping("/addEmployee")
-    public String addEmployee(Model model) {
+    public String addEmployee(Model model, HttpServletRequest request) {
+        String username = request.getRemoteUser();
+        User user = userService.findUserByUsername(username).get();
+        if(!user.getAuthorities().contains(Role.ADMIN)) {
+            model.addAttribute("department", user.getDepartment());
+        }
         List<Department> allDepartments = departmentService.findAllDepartments();
         model.addAttribute("departments", allDepartments);
         model.addAttribute("userDto", new UserDto());
@@ -58,7 +76,7 @@ public class AdminController {
     }
 
     @PostMapping("/addEmployee")
-    public String addEmployee(@Valid @ModelAttribute("userDto") UserDto userDto, BindingResult bindingResult, Model model) {
+    public String addEmployee(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult, Model model, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "admin/addEmployee";
         }
@@ -67,19 +85,29 @@ public class AdminController {
         List<Department> allDepartments = departmentService.findAllDepartments();
         model.addAttribute("departments", allDepartments);
         model.addAttribute("userDto", new UserDto());
+        String username = request.getRemoteUser();
+        User currentUser = userService.findUserByUsername(username).get();
+        if(!currentUser.getAuthorities().contains(Role.ADMIN)) {
+            model.addAttribute("department", currentUser.getDepartment());
+        }
         return "admin/addEmployee";
     }
 
     @GetMapping("/addEquipment")
-    public String addEquipment(Model model) {
+    public String addEquipment(Model model, HttpServletRequest request) {
+        String username = request.getRemoteUser();
+        User user = userService.findUserByUsername(username).get();
+        if(!user.getAuthorities().contains(Role.ADMIN)) {
+            model.addAttribute("department", user.getDepartment());
+        }
         List<Department> allDepartments = departmentService.findAllDepartments();
         model.addAttribute("departments", allDepartments);
-        model.addAttribute("newEquipmentDto", new EquipmentDto());
+        model.addAttribute("equipmentDto", new EquipmentDto());
         return "admin/addEquipment";
     }
 
     @PostMapping("/addEquipment")
-    public String addEquipment(@Valid @ModelAttribute("newEquipmentDto") EquipmentDto equipmentDto, BindingResult bindingResult, Model model) {
+    public String addEquipment(@Valid @ModelAttribute EquipmentDto equipmentDto, BindingResult bindingResult, Model model, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "admin/addEquipment";
         }
@@ -88,7 +116,12 @@ public class AdminController {
         model.addAttribute("equipment", equipment);
         List<Department> allDepartments = departmentService.findAllDepartments();
         model.addAttribute("departments", allDepartments);
-        model.addAttribute("newEquipmentDto", new EquipmentDto());
+        model.addAttribute("equipmentDto", new EquipmentDto());
+        String username = request.getRemoteUser();
+        User currentUser = userService.findUserByUsername(username).get();
+        if(!currentUser.getAuthorities().contains(Role.ADMIN)) {
+            model.addAttribute("department", currentUser.getDepartment());
+        }
         return "admin/addEquipment";
     }
 
