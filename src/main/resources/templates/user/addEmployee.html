@@ -19,11 +19,13 @@
                     <label for="employeeFirstName" class="form-label">Employee's first name: </label>
                     <input type="text" th:field="*{firstName}" placeholder="Employee's first name" class="form-control"
                            id="employeeFirstName"/>
+                    <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="employeeSecondName" class="form-label">Employee's second name: </label>
                     <input type="text" th:field="*{secondName}" placeholder="Employee's second name"
                            class="form-control" id="employeeSecondName"/>
+                    <p th:if="${#fields.hasErrors('secondName')}" th:errors="*{secondName}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="departmentSelect">Select employee's department: </label>
@@ -36,11 +38,13 @@
                     <label for="employeeUsername" class="form-label">Employee's username: </label>
                     <input type="text" th:field="*{username}" placeholder="Employee's username" class="form-control"
                            id="employeeUsername"/>
+                    <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="employeePassword" class="form-label">Employee's password: </label>
                     <input type="text" th:field="*{password}" placeholder="Employee's password" class="form-control"
                            id="employeePassword"/>
+                    <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="roleSelect">Select employee's role: </label>

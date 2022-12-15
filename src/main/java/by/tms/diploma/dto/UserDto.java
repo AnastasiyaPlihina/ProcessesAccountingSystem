@@ -3,15 +3,28 @@ package by.tms.diploma.dto;
 import by.tms.diploma.entity.Department;
 import by.tms.diploma.entity.Role;
 
-import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 public class UserDto {
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z]{3,16}")
     private String username;
+    @NotBlank
+    @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z]{3,16}")
     private String password;
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z]{3,16}")
     private String firstName;
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z]{3,16}")
     private String secondName;
+    @NotNull
     private Department department;
+    @Size(min = 1)
     private Set<Role> roles;
 
     public UserDto() {

@@ -1,8 +1,12 @@
 package by.tms.diploma.dto;
 
 
+import javax.validation.constraints.NotBlank;
+
 public class CleaningProcessDto {
+    @NotBlank
     private String cleaningType;
+    @NotBlank
     private String procedure;
 
     public CleaningProcessDto() {

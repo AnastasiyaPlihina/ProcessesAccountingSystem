@@ -3,11 +3,13 @@ package by.tms.diploma.entity;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity
 public class Department extends AbstractEntity {
     @NotBlank
+    @Pattern(regexp = "[a-zA-Z]{3,16}")
     private String name;
     @OneToMany
     private List<User> employees;

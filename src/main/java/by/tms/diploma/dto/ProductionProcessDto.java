@@ -1,7 +1,11 @@
 package by.tms.diploma.dto;
 
+import javax.validation.constraints.NotBlank;
+
 public class ProductionProcessDto {
+    @NotBlank
     private String productName;
+    @NotBlank
     private String seriesNumber;
 
     public ProductionProcessDto() {

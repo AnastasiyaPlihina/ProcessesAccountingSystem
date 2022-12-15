@@ -84,12 +84,6 @@ public class UserController {
 
     @PostMapping("/addEmployee")
     public String addEmployee(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult, Model model, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
-            return "user/addEmployee";
-        }
-        Optional<User> user = userService.saveUser(userDto);
-        model.addAttribute("user", user.get());
-        model.addAttribute("userDto", new UserDto());
         String username = request.getRemoteUser();
         User currentUser = userService.findUserByUsername(username).get();
         List<Department> departments = new ArrayList<>();
@@ -99,6 +93,12 @@ public class UserController {
             departments = departmentService.findAllDepartments();
         }
         model.addAttribute("departments", departments);
+        if (bindingResult.hasErrors()) {
+            return "user/addEmployee";
+        }
+        Optional<User> user = userService.saveUser(userDto);
+        model.addAttribute("user", user.get());
+        model.addAttribute("userDto", new UserDto());
         return "user/addEmployee";
     }
 
@@ -134,13 +134,6 @@ public class UserController {
 
     @PostMapping("/addEquipment")
     public String addEquipment(@Valid @ModelAttribute EquipmentDto equipmentDto, BindingResult bindingResult, Model model, HttpServletRequest request) {
-        if (bindingResult.hasErrors()) {
-            return "user/addEquipment";
-        }
-        Equipment equipment = equipmentMapper.convertEquipmentDtoToEquipment(equipmentDto);
-        equipmentService.saveEquipment(equipment);
-        model.addAttribute("equipment", equipment);
-        model.addAttribute("equipmentDto", new EquipmentDto());
         String username = request.getRemoteUser();
         User currentUser = userService.findUserByUsername(username).get();
         List<Department> departments = new ArrayList<>();
@@ -150,6 +143,13 @@ public class UserController {
             departments = departmentService.findAllDepartments();
         }
         model.addAttribute("departments", departments);
+        if (bindingResult.hasErrors()) {
+            return "user/addEquipment";
+        }
+        Equipment equipment = equipmentMapper.convertEquipmentDtoToEquipment(equipmentDto);
+        equipmentService.saveEquipment(equipment);
+        model.addAttribute("equipment", equipment);
+        model.addAttribute("equipmentDto", new EquipmentDto());
         return "user/addEquipment";
     }
 
@@ -188,7 +188,7 @@ public class UserController {
     public String selectProcess(Model model, HttpServletRequest request) {
         String username = request.getRemoteUser();
         User user = userService.findUserByUsername(username).get();
-        List<Equipment> equipmentList = new ArrayList<>();
+        List<Equipment> equipmentList;
         if (user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
             equipmentList = equipmentService.findAllEquipment();
         } else {
@@ -201,7 +201,10 @@ public class UserController {
     }
 
     @PostMapping("/selectProcess")
-    public String selectProcess(@ModelAttribute ProcessDto processDto, HttpSession httpSession) {
+    public String selectProcess(@Valid @ModelAttribute ProcessDto processDto, BindingResult bindingResult, HttpSession httpSession) {
+        if (bindingResult.hasErrors()) {
+            return "user/startProcess";
+        }
         httpSession.setAttribute("equipmentQrCodeList", processDto.getEquipmentQrCodes());
         return "redirect:/user/" + processDto.getProcessType();
     }
@@ -215,7 +218,10 @@ public class UserController {
     }
 
     @PostMapping("/cleaning")
-    public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto, HttpSession httpSession, Model model, HttpServletRequest request) {
+    public String cleaningProcess(@Valid @ModelAttribute CleaningProcessDto cleaningProcessDto, BindingResult bindingResult, HttpSession httpSession, Model model, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "process/cleaning";
+        }
         List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
         List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
         httpSession.removeAttribute("equipmentQrCodeList");
@@ -238,7 +244,10 @@ public class UserController {
     }
 
     @PostMapping("/production")
-    public String productionProcess(@ModelAttribute ProductionProcessDto productionProcessDto, HttpSession httpSession, Model model, HttpServletRequest request) {
+    public String productionProcess(@Valid @ModelAttribute ProductionProcessDto productionProcessDto, BindingResult bindingResult, HttpSession httpSession, Model model, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "process/production";
+        }
         List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
         List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
         httpSession.removeAttribute("equipmentQrCodeList");
@@ -261,7 +270,10 @@ public class UserController {
     }
 
     @PostMapping("/maintenance")
-    public String maintenanceService(@ModelAttribute MaintenanceServiceDto maintenanceServiceDto, HttpSession httpSession, Model model, HttpServletRequest request) {
+    public String maintenanceService(@Valid @ModelAttribute MaintenanceServiceDto maintenanceServiceDto,BindingResult bindingResult, HttpSession httpSession, Model model, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "process/maintenance";
+        }
         List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
         List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
         httpSession.removeAttribute("equipmentQrCodeList");
@@ -284,7 +296,10 @@ public class UserController {
     }
 
     @PostMapping("/qualification")
-    public String qualificationProcess(@ModelAttribute QualificationProcessDto qualificationProcessDto, HttpSession httpSession, Model model, HttpServletRequest request) {
+    public String qualificationProcess(@Valid @ModelAttribute QualificationProcessDto qualificationProcessDto, BindingResult bindingResult, HttpSession httpSession, Model model, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "process/qualification";
+        }
         List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
         List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
         httpSession.removeAttribute("equipmentQrCodeList");

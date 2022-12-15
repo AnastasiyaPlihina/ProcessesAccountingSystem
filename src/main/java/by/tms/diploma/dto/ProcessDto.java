@@ -1,9 +1,13 @@
 package by.tms.diploma.dto;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class ProcessDto {
+    @Size(min = 1)
     private List<String> equipmentQrCodes;
+    @NotNull
     private String processType;
 
     public ProcessDto() {

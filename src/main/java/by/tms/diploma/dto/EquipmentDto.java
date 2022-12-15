@@ -2,16 +2,37 @@ package by.tms.diploma.dto;
 
 import by.tms.diploma.entity.Department;
 import by.tms.diploma.entity.ObjectStatus;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 public class EquipmentDto {
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z]{3,16}")
     private String name;
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z\\d]{3,16}")
     private String qrCode;
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z0-9]{3,10}")
     private String internalCode;
+    @NotBlank
+    @Pattern(regexp = "[0-9]{3,10}")
     private String inventoryNumber;
+    @NotBlank
+    @Pattern(regexp = "[a-zA-Z]{3,20}")
     private String technicalCharacteristic;
+    @NotNull
     private Department department;
+    @NotNull
+    @DateTimeFormat
     private String lastQualificationDate;
+    @NotNull
+    @DateTimeFormat
     private String lastMaintenanceServiceDate;
+    @NotNull
     private ObjectStatus equipmentStatus;
     public EquipmentDto() {
     }

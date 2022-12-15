@@ -19,23 +19,27 @@
                     <label for="equipmentName" class="form-label">Equipment's name: </label>
                     <input type="text" th:field="*{name}" placeholder="Equipment's name" class="form-control"
                            id="equipmentName"/>
+                    <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="equipmentQrCode" class="form-label">Equipment's qr-code: </label>
                     <input type="text" th:field="*{qrCode}" placeholder="Equipment's qr-code"
                            class="form-control" id="equipmentQrCode"/>
+                    <p th:if="${#fields.hasErrors('qrCode')}" th:errors="*{qrCode}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="equipmentInternalCode" class="form-label">Equipment's internal code: </label>
                     <input type="text" th:field="*{internalCode}" placeholder="Equipment's internal code"
                            class="form-control"
                            id="equipmentInternalCode"/>
+                    <p th:if="${#fields.hasErrors('internalCode')}" th:errors="*{internalCode}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="equipmentInventoryNumber" class="form-label">Equipment's inventory number: </label>
                     <input type="text" th:field="*{inventoryNumber}" placeholder="Equipment's inventory number"
                            class="form-control"
                            id="equipmentInventoryNumber"/>
+                    <p th:if="${#fields.hasErrors('inventoryNumber')}" th:errors="*{inventoryNumber}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="equipmentTechnicalCharacteristic" class="form-label">Equipment's technical
@@ -43,6 +47,7 @@
                     <input type="text" th:field="*{technicalCharacteristic}"
                            placeholder="Equipment's technical characteristic" class="form-control"
                            id="equipmentTechnicalCharacteristic"/>
+                    <p th:if="${#fields.hasErrors('technicalCharacteristic')}" th:errors="*{technicalCharacteristic}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="departmentSelect">Select department: </label>
@@ -57,6 +62,7 @@
                     <input type="date" th:field="*{lastQualificationDate}"
                            placeholder="Equipment's last qualification date" class="form-control"
                            id="equipmentLastQualificationDate"/>
+                    <p th:if="${#fields.hasErrors('lastQualificationDate')}" th:errors="*{lastQualificationDate}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="equipmentLastMaintenanceServiceDate" class="form-label">Equipment's last maintenance
@@ -64,6 +70,7 @@
                     <input type="date" th:field="*{lastMaintenanceServiceDate}"
                            placeholder="Equipment's last maintenance service date" class="form-control"
                            id="equipmentLastMaintenanceServiceDate"/>
+                    <p th:if="${#fields.hasErrors('lastMaintenanceServiceDate')}" th:errors="*{lastMaintenanceServiceDate}"></p>
                 </div>
                 <div class="mb-3">
                     <label for="roleSelect">Select equipment's status: </label>
