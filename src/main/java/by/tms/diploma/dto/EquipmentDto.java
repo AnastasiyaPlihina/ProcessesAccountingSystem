@@ -22,15 +22,13 @@ public class EquipmentDto {
     @Pattern(regexp = "[0-9]{3,10}")
     private String inventoryNumber;
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z]{3,20}")
+    @Pattern(regexp = "[a-zA-Z]{3,60}")
     private String technicalCharacteristic;
     @NotNull
     private Department department;
     @NotNull
-    @DateTimeFormat
     private String lastQualificationDate;
     @NotNull
-    @DateTimeFormat
     private String lastMaintenanceServiceDate;
     @NotNull
     private ObjectStatus equipmentStatus;

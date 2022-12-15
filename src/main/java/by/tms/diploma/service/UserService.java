@@ -65,7 +65,7 @@ public class UserService implements UserDetailsService {
 
     public Optional<User> saveUser(UserDto userDto) {
         User user = userMapper.convertUserDtoToUser(userDto);
-        if (!userRepository.existsById(user.getId())) {
+        if (!userRepository.existsByUsername(user.getUsername())) {
             user.setPassword(encoder.encode(user.getPassword()));
             User saveUser = userRepository.save(user);
             logger.info(saveUser.getFirstName() + " " + saveUser.getSecondName() + " was saved");
@@ -99,4 +99,16 @@ public class UserService implements UserDetailsService {
         department.getEmployees().remove(userById.get());
         departmentService.updateDepartment(department);
     }
+
+    public List<User> findEmployeeList(String currentUserUsername) {
+        User user = findUserByUsername(currentUserUsername).get();
+        List<User> employeeList;
+        if (user.getAuthorities().contains(Role.ADMIN)) {
+            employeeList = findAllEmployees();
+        } else {
+            employeeList = findEmployeesOfDepartment(user.getDepartment().getId());
+        }
+        return employeeList;
+    }
+
 }

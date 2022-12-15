@@ -106,13 +106,7 @@ public class UserController {
     public String deleteEmployee(@PathVariable long id, HttpServletRequest request, Model model) {
         userService.deleteEmployee(id);
         String username = request.getRemoteUser();
-        User user = userService.findUserByUsername(username).get();
-        List<User> employeeList;
-        if (user.getAuthorities().contains(Role.ADMIN)) {
-            employeeList = userService.findAllEmployees();
-        } else {
-            employeeList = userService.findEmployeesOfDepartment(user.getDepartment().getId());
-        }
+        List<User> employeeList = userService.findEmployeeList(username);
         model.addAttribute("employeeList", employeeList);
         return "employeeList";
     }
@@ -120,13 +114,8 @@ public class UserController {
     @GetMapping("/addEquipment")
     public String addEquipment(Model model, HttpServletRequest request) {
         String username = request.getRemoteUser();
-        User user = userService.findUserByUsername(username).get();
-        List<Department> departments = new ArrayList<>();
-        if (!user.getAuthorities().contains(Role.ADMIN)) {
-            departments.add(user.getDepartment());
-        } else {
-            departments = departmentService.findAllDepartments();
-        }
+        User currentUser = userService.findUserByUsername(username).get();
+        List<Department> departments = departmentService.findDepartmentList(currentUser);
         model.addAttribute("departments", departments);
         model.addAttribute("equipmentDto", new EquipmentDto());
         return "user/addEquipment";
@@ -136,12 +125,7 @@ public class UserController {
     public String addEquipment(@Valid @ModelAttribute EquipmentDto equipmentDto, BindingResult bindingResult, Model model, HttpServletRequest request) {
         String username = request.getRemoteUser();
         User currentUser = userService.findUserByUsername(username).get();
-        List<Department> departments = new ArrayList<>();
-        if (!currentUser.getAuthorities().contains(Role.ADMIN)) {
-            departments.add(currentUser.getDepartment());
-        } else {
-            departments = departmentService.findAllDepartments();
-        }
+        List<Department> departments = departmentService.findDepartmentList(currentUser);
         model.addAttribute("departments", departments);
         if (bindingResult.hasErrors()) {
             return "user/addEquipment";
@@ -159,14 +143,14 @@ public class UserController {
         String username = request.getRemoteUser();
         User user = userService.findUserByUsername(username).get();
         List<Equipment> equipmentList;
-        if (user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
+        if (user.getAuthorities().contains(Role.ADMIN)) {
             equipmentList = equipmentService.findAllEquipment();
         } else {
             long departmentId = user.getDepartment().getId();
             equipmentList = equipmentService.findEquipmentOfDepartment(departmentId);
         }
         model.addAttribute("equipmentList", equipmentList);
-        return "user/equipmentList";
+        return "equipmentList";
     }
 
     @GetMapping("/showEquipmentList")
@@ -181,7 +165,7 @@ public class UserController {
             equipmentList = equipmentService.findEquipmentOfDepartment(departmentId);
         }
         model.addAttribute("equipmentList", equipmentList);
-        return "user/equipmentList";
+        return "equipmentList";
     }
 
     @GetMapping("/selectProcess")
