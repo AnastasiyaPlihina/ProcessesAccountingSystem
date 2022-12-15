@@ -5,9 +5,8 @@ import by.tms.diploma.entity.Equipment;
 import by.tms.diploma.exception.EquipmentNotFoundException;
 import by.tms.diploma.exception.SaveException;
 import by.tms.diploma.repository.EquipmentRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +16,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class EquipmentService {
-    private static final Logger logger = LoggerFactory.getLogger(EquipmentService.class);
+    private static final Logger logger = LogManager.getLogger(EquipmentService.class);
 
     private final EquipmentRepository equipmentRepository;
 

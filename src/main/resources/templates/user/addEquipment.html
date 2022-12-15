@@ -14,7 +14,7 @@
                 <p th:text="${equipment.name} + ' was added!'"></p>
                 <br>
             </div>
-            <form th:action="@{/admin/addEquipment}" th:object="${equipmentDto}" method="post">
+            <form th:action="@{/user/addEquipment}" th:object="${equipmentDto}" method="post">
                 <div class="mb-3">
                     <label for="equipmentName" class="form-label">Equipment's name: </label>
                     <input type="text" th:field="*{name}" placeholder="Equipment's name" class="form-control"

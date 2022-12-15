@@ -6,8 +6,8 @@ import by.tms.diploma.exception.ProcessException;
 import by.tms.diploma.exception.StartProcessException;
 import by.tms.diploma.mapper.ProcessMapper;
 import by.tms.diploma.repository.ProcessRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +20,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class ProcessService {
-    private static final Logger logger = LoggerFactory.getLogger(ProcessService.class);
+    private static final Logger logger = LogManager.getLogger(ProcessService.class);
 
     private final ProcessRepository processRepository;
 

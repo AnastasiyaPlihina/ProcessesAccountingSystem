@@ -5,9 +5,8 @@ import by.tms.diploma.entity.Equipment;
 import by.tms.diploma.entity.User;
 import by.tms.diploma.exception.SaveException;
 import by.tms.diploma.repository.DepartmentRepository;
-import by.tms.diploma.web.ErrorController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ import java.util.Optional;
 @Service
 @Transactional
 public class DepartmentService {
-    private static final Logger logger = LoggerFactory.getLogger(DepartmentService.class);
+    private static final Logger logger = LogManager.getLogger(DepartmentService.class);
     @Autowired
     private DepartmentRepository departmentRepository;
 

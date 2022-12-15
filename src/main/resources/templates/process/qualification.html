@@ -15,7 +15,7 @@
                 <p th:text="${equipmentOpt.internalCode}"></p>
             </div>
             <br>
-            <form th:action="@{/employee/qualification}" th:object="${qualificationProcessDto}" method="post">
+            <form th:action="@{/user/qualification}" th:object="${qualificationProcessDto}" method="post">
                 <div class="mb-3">
                     <label for="descriptionId" class="form-label">Description: </label>
                     <input type="text" th:field="*{description}" placeholder="Description" class="form-control"

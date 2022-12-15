@@ -17,7 +17,7 @@
             <div th:if="${!equipmentList.isEmpty()}">
                 <h3>Select equipment and kind of process:</h3>
                 <br>
-                <form th:action="@{/employee/selectProcess}" th:object="${processDto}" method="post">
+                <form th:action="@{/user/selectProcess}" th:object="${processDto}" method="post">
                     <p>Select equipment: </p>
                     <div th:each="equipmentOpt : ${equipmentList}">
                         <input type="checkbox" th:field="*{equipmentQrCodes}" th:value="${equipmentOpt.qrCode}"/>

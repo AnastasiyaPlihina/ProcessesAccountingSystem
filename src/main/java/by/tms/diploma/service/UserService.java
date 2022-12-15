@@ -7,9 +7,8 @@ import by.tms.diploma.entity.User;
 import by.tms.diploma.exception.SaveException;
 import by.tms.diploma.mapper.UserMapper;
 import by.tms.diploma.repository.UserRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,7 +23,7 @@ import java.util.Set;
 @Service
 @Transactional
 public class UserService implements UserDetailsService {
-    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+    private static final Logger logger = LogManager.getLogger(UserService.class);
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
     private final UserRepository userRepository;

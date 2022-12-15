@@ -24,12 +24,12 @@
             <td th:text="${employee.secondName}"></td>
             <td th:text="${employee.department.name}"></td>
             <td>
-                <form th:action="@{/admin/updateEmployee}" method="get">
+                <form th:action="@{/user/updateEmployee}" method="get">
                     <button class="btn btn-outline-warning mt-5">Update employee</button>
                 </form>
             </td>
             <td>
-                <form th:action="@{/admin/{id}/deleteEmployee (id = ${employee.id})}" method="post">
+                <form th:action="@{/user/{id}/deleteEmployee (id = ${employee.id})}" method="post">
                     <button class="btn btn-outline-danger mt-5">Delete employee</button>
                 </form>
             </td>

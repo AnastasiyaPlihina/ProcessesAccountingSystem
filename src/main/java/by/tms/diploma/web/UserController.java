@@ -2,42 +2,171 @@ package by.tms.diploma.web;
 
 import by.tms.diploma.dto.*;
 import by.tms.diploma.entity.*;
-import by.tms.diploma.repository.DepartmentRepository;
+import by.tms.diploma.mapper.EquipmentMapper;
 import by.tms.diploma.service.DepartmentService;
 import by.tms.diploma.service.EquipmentService;
 import by.tms.diploma.service.ProcessService;
 import by.tms.diploma.service.UserService;
-import org.apache.coyote.Request;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.HttpRequestHandler;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.net.http.HttpRequest;
-import java.time.LocalDateTime;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/employee")
-public class EmployeeController {
-
+@RequestMapping("/user")
+public class UserController {
+    private final DepartmentService departmentService;
     private final UserService userService;
     private final EquipmentService equipmentService;
+    private final EquipmentMapper equipmentMapper;
     private final ProcessService processService;
-    private final DepartmentService departmentService;
 
-    public EmployeeController(UserService userService, EquipmentService equipmentService, ProcessService processService, DepartmentService departmentService) {
+    public UserController(DepartmentService departmentService, UserService userService, EquipmentService equipmentService, EquipmentMapper equipmentMapper, ProcessService processService) {
+        this.departmentService = departmentService;
         this.userService = userService;
         this.equipmentService = equipmentService;
+        this.equipmentMapper = equipmentMapper;
         this.processService = processService;
-        this.departmentService = departmentService;
+    }
+
+    @GetMapping("/showEmployeeList")
+    public String showEmployeeList(Model model, HttpServletRequest request) {
+        String username = request.getRemoteUser();
+        User user = userService.findUserByUsername(username).get();
+        List<User> employeeList;
+        if (user.getAuthorities().contains(Role.ADMIN)) {
+            employeeList = userService.findAllEmployees();
+        } else {
+            employeeList = userService.findEmployeesOfDepartment(user.getDepartment().getId());
+        }
+        model.addAttribute("employeeList", employeeList);
+        return "employeeList";
+    }
+
+    @GetMapping("/addDepartment")
+    public String addDepartment(@ModelAttribute Department department) {
+        return "user/addDepartment";
+    }
+
+    @PostMapping("/addDepartment")
+    public String addDepartment(@Valid @ModelAttribute Department department,
+                                BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "user/addDepartment";
+        }
+        departmentService.saveDepartment(department);
+        model.addAttribute("departmentName", department.getName());
+        model.addAttribute("department", new Department());
+        return "user/addDepartment";
+    }
+
+    @GetMapping("/addEmployee")
+    public String addEmployee(Model model, HttpServletRequest request) {
+        String username = request.getRemoteUser();
+        User user = userService.findUserByUsername(username).get();
+        List<Department> departments = new ArrayList<>();
+        if (!user.getAuthorities().contains(Role.ADMIN)) {
+            departments.add(user.getDepartment());
+        } else {
+            departments = departmentService.findAllDepartments();
+        }
+        model.addAttribute("departments", departments);
+        model.addAttribute("userDto", new UserDto());
+        return "user/addEmployee";
+    }
+
+    @PostMapping("/addEmployee")
+    public String addEmployee(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult, Model model, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "user/addEmployee";
+        }
+        Optional<User> user = userService.saveUser(userDto);
+        model.addAttribute("user", user.get());
+        model.addAttribute("userDto", new UserDto());
+        String username = request.getRemoteUser();
+        User currentUser = userService.findUserByUsername(username).get();
+        List<Department> departments = new ArrayList<>();
+        if (!currentUser.getAuthorities().contains(Role.ADMIN)) {
+            departments.add(currentUser.getDepartment());
+        } else {
+            departments = departmentService.findAllDepartments();
+        }
+        model.addAttribute("departments", departments);
+        return "user/addEmployee";
+    }
+
+    @PostMapping("/{id}/deleteEmployee")
+    public String deleteEmployee(@PathVariable long id, HttpServletRequest request, Model model) {
+        userService.deleteEmployee(id);
+        String username = request.getRemoteUser();
+        User user = userService.findUserByUsername(username).get();
+        List<User> employeeList;
+        if (user.getAuthorities().contains(Role.ADMIN)) {
+            employeeList = userService.findAllEmployees();
+        } else {
+            employeeList = userService.findEmployeesOfDepartment(user.getDepartment().getId());
+        }
+        model.addAttribute("employeeList", employeeList);
+        return "employeeList";
+    }
+
+    @GetMapping("/addEquipment")
+    public String addEquipment(Model model, HttpServletRequest request) {
+        String username = request.getRemoteUser();
+        User user = userService.findUserByUsername(username).get();
+        List<Department> departments = new ArrayList<>();
+        if (!user.getAuthorities().contains(Role.ADMIN)) {
+            departments.add(user.getDepartment());
+        } else {
+            departments = departmentService.findAllDepartments();
+        }
+        model.addAttribute("departments", departments);
+        model.addAttribute("equipmentDto", new EquipmentDto());
+        return "user/addEquipment";
+    }
+
+    @PostMapping("/addEquipment")
+    public String addEquipment(@Valid @ModelAttribute EquipmentDto equipmentDto, BindingResult bindingResult, Model model, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            return "user/addEquipment";
+        }
+        Equipment equipment = equipmentMapper.convertEquipmentDtoToEquipment(equipmentDto);
+        equipmentService.saveEquipment(equipment);
+        model.addAttribute("equipment", equipment);
+        model.addAttribute("equipmentDto", new EquipmentDto());
+        String username = request.getRemoteUser();
+        User currentUser = userService.findUserByUsername(username).get();
+        List<Department> departments = new ArrayList<>();
+        if (!currentUser.getAuthorities().contains(Role.ADMIN)) {
+            departments.add(currentUser.getDepartment());
+        } else {
+            departments = departmentService.findAllDepartments();
+        }
+        model.addAttribute("departments", departments);
+        return "user/addEquipment";
+    }
+
+    @PostMapping("/{id}/deleteEquipment")
+    public String deleteEquipment(@PathVariable long id, HttpServletRequest request, Model model) {
+        equipmentService.deleteEquipment(id);
+        String username = request.getRemoteUser();
+        User user = userService.findUserByUsername(username).get();
+        List<Equipment> equipmentList;
+        if (user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
+            equipmentList = equipmentService.findAllEquipment();
+        } else {
+            long departmentId = user.getDepartment().getId();
+            equipmentList = equipmentService.findEquipmentOfDepartment(departmentId);
+        }
+        model.addAttribute("equipmentList", equipmentList);
+        return "user/equipmentList";
     }
 
     @GetMapping("/showEquipmentList")
@@ -45,14 +174,14 @@ public class EmployeeController {
         String username = request.getRemoteUser();
         User user = userService.findUserByUsername(username).get();
         List<Equipment> equipmentList;
-        if(user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
+        if (user.getAuthorities().contains(Role.ADMIN) || user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
             equipmentList = equipmentService.findAllEquipment();
         } else {
             long departmentId = user.getDepartment().getId();
             equipmentList = equipmentService.findEquipmentOfDepartment(departmentId);
         }
         model.addAttribute("equipmentList", equipmentList);
-        return "employee/equipmentList";
+        return "user/equipmentList";
     }
 
     @GetMapping("/selectProcess")
@@ -60,7 +189,7 @@ public class EmployeeController {
         String username = request.getRemoteUser();
         User user = userService.findUserByUsername(username).get();
         List<Equipment> equipmentList = new ArrayList<>();
-        if(user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
+        if (user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
             equipmentList = equipmentService.findAllEquipment();
         } else {
             long departmentId = user.getDepartment().getId();
@@ -68,13 +197,13 @@ public class EmployeeController {
         }
         model.addAttribute("equipmentList", equipmentList);
         model.addAttribute("processDto", new ProcessDto());
-        return "employee/startProcess";
+        return "user/startProcess";
     }
 
     @PostMapping("/selectProcess")
     public String selectProcess(@ModelAttribute ProcessDto processDto, HttpSession httpSession) {
         httpSession.setAttribute("equipmentQrCodeList", processDto.getEquipmentQrCodes());
-        return "redirect:/employee/" + processDto.getProcessType();
+        return "redirect:/user/" + processDto.getProcessType();
     }
 
     @GetMapping("/cleaning")
@@ -86,7 +215,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/cleaning")
-    public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto,HttpSession httpSession, Model model, HttpServletRequest request) {
+    public String cleaningProcess(@ModelAttribute CleaningProcessDto cleaningProcessDto, HttpSession httpSession, Model model, HttpServletRequest request) {
         List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
         List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
         httpSession.removeAttribute("equipmentQrCodeList");
@@ -99,6 +228,7 @@ public class EmployeeController {
         model.addAttribute("process", process.get());
         return "process/inProcess";
     }
+
     @GetMapping("/production")
     public String productionProcess(@ModelAttribute ProductionProcessDto productionProcessDto, HttpSession httpSession, Model model) {
         List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
@@ -131,7 +261,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/maintenance")
-    public String maintenanceService(@ModelAttribute MaintenanceServiceDto maintenanceServiceDto,HttpSession httpSession, Model model, HttpServletRequest request) {
+    public String maintenanceService(@ModelAttribute MaintenanceServiceDto maintenanceServiceDto, HttpSession httpSession, Model model, HttpServletRequest request) {
         List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
         List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
         httpSession.removeAttribute("equipmentQrCodeList");
@@ -144,6 +274,7 @@ public class EmployeeController {
         model.addAttribute("process", process.get());
         return "process/inProcess";
     }
+
     @GetMapping("/qualification")
     public String qualificationProcess(@ModelAttribute QualificationProcessDto qualificationProcessDto, HttpSession httpSession, Model model) {
         List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
@@ -153,7 +284,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/qualification")
-    public String qualificationProcess(@ModelAttribute QualificationProcessDto qualificationProcessDto,HttpSession httpSession, Model model, HttpServletRequest request) {
+    public String qualificationProcess(@ModelAttribute QualificationProcessDto qualificationProcessDto, HttpSession httpSession, Model model, HttpServletRequest request) {
         List<String> equipmentQrCodeList = (List<String>) httpSession.getAttribute("equipmentQrCodeList");
         List<Equipment> equipmentList = equipmentService.findListOfInternalCodes(equipmentQrCodeList);
         httpSession.removeAttribute("equipmentQrCodeList");

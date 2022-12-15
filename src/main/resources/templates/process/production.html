@@ -15,7 +15,7 @@
                 <p th:text="${equipmentOpt.internalCode}"></p>
             </div>
             <br>
-            <form th:action="@{/employee/production}" th:object="${productionProcessDto}" method="post">
+            <form th:action="@{/user/production}" th:object="${productionProcessDto}" method="post">
                 <div class="mb-3">
                     <label for="productNameId" class="form-label">Product name: </label>
                     <input type="text" th:field="*{productName}" placeholder="Product name" class="form-control"
