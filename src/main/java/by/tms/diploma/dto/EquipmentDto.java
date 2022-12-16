@@ -13,16 +13,16 @@ public class EquipmentDto {
     @Pattern(regexp = "[a-zA-Z]{3,16}")
     private String name;
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z\\d]{3,16}")
+    @Pattern(regexp = ".{3,16}")
     private String qrCode;
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z0-9]{3,10}")
+    @Pattern(regexp = ".{3,10}")
     private String internalCode;
     @NotBlank
     @Pattern(regexp = "[0-9]{3,10}")
     private String inventoryNumber;
     @NotBlank
-    @Pattern(regexp = "[a-zA-Z]{3,60}")
+    @Pattern(regexp = ".{3,60}")
     private String technicalCharacteristic;
     @NotNull
     private Department department;

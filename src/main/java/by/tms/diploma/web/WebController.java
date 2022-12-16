@@ -3,6 +3,7 @@ package by.tms.diploma.web;
 import by.tms.diploma.dto.AbstractProcessDto;
 import by.tms.diploma.entity.AbstractProcess;
 import by.tms.diploma.entity.Equipment;
+import by.tms.diploma.entity.Role;
 import by.tms.diploma.entity.User;
 import by.tms.diploma.repository.DepartmentRepository;
 import by.tms.diploma.service.EquipmentService;
@@ -57,8 +58,15 @@ public class WebController {
     @GetMapping("/selectEquipment")
     public String selectEquipment(Model model, HttpServletRequest request) {
         String username = request.getRemoteUser();
-        Optional<User> userByUsername = userService.findUserByUsername(username);
-        model.addAttribute("equipmentList", equipmentService.findEquipmentOfDepartment(userByUsername.get().getDepartment().getId()));
+        User user = userService.findUserByUsername(username).get();
+        List<Equipment> equipmentList;
+        if (user.getAuthorities().contains(Role.AUDITOR)) {
+            equipmentList = equipmentService.findAllEquipment();
+        } else {
+            long departmentId = user.getDepartment().getId();
+            equipmentList = equipmentService.findFreeEquipmentOfDepartment(departmentId);
+        }
+        model.addAttribute("equipmentList", equipmentList);
         return "selectEquipment";
     }
 

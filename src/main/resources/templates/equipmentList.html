@@ -45,12 +45,12 @@
             <div sec:authorize="hasAnyAuthority('ADMIN', 'HEAD_OF_DEPARTMENT')">
                 <td>
                     <form th:action="@{/user/updateEquipment}" method="get">
-                        <button class="btn btn-outline-warning mt-5">Update equipment</button>
+                        <button class="btn btn-outline-warning">Update equipment</button>
                     </form>
                 </td>
                 <td>
                     <form th:action="@{/user/{id}/deleteEquipment (id = ${equipment.id})}" method="post">
-                        <button class="btn btn-outline-danger mt-5">Delete equipment</button>
+                        <button class="btn btn-outline-danger">Delete equipment</button>
                     </form>
                 </td>
             </div>

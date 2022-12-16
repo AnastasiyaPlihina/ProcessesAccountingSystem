@@ -13,14 +13,29 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
-
+    private static final String[] PUBLIC_URLS = {
+            "/",
+            "/equipmentInfo",
+            "/selectEquipment",
+            "/equipmentLog"
+    };
+    private static final String[] ADMIN_AND_HEAD_URLS = {
+            "user/addEmployee",
+            "user/{id}/deleteEmployee",
+            "user/addEquipment",
+            "user/{id}/deleteEquipment"
+    };
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
-//                .antMatchers("/user/new", "/user/{id}/edit").hasAuthority("ADMIN")
-//                .antMatchers("/user/{id}").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers(PUBLIC_URLS).permitAll()
+                .antMatchers("/user/addDepartment").hasAuthority("ADMIN")
+                .antMatchers(ADMIN_AND_HEAD_URLS).hasAnyAuthority("ADMIN", "HEAD_OF_DEPARTMENT")
+                .antMatchers("user/selectProcess", "user/stopProcess").hasAnyAuthority("PRODUCTION_WORKER", "SERVICE_ENGINEER")
+                .antMatchers("user/showEquipmentList").hasAnyAuthority("ADMIN", "HEAD_OF_DEPARTMENT", "PRODUCTION_WORKER", "SERVICE_ENGINEER")
+                .antMatchers("/user/cleaning","/user/production").hasAuthority("PRODUCTION_WORKER")
+                .antMatchers("/user/maintenance","/user/qualification").hasAuthority("SERVICE_ENGINEER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -33,8 +48,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .exceptionHandling()
                 .accessDeniedPage("/");
     }
+
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(10);
     }
 

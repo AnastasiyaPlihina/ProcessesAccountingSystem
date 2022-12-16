@@ -158,7 +158,9 @@ public class UserController {
         String username = request.getRemoteUser();
         User user = userService.findUserByUsername(username).get();
         List<Equipment> equipmentList;
-        if (user.getAuthorities().contains(Role.ADMIN) || user.getAuthorities().contains(Role.SERVICE_ENGINEER)) {
+        if (user.getAuthorities().contains(Role.ADMIN)
+                || user.getAuthorities().contains(Role.SERVICE_ENGINEER)
+                || user.getAuthorities().contains(Role.AUDITOR)) {
             equipmentList = equipmentService.findAllEquipment();
         } else {
             long departmentId = user.getDepartment().getId();
