@@ -64,7 +64,7 @@ public class WebController {
             equipmentList = equipmentService.findAllEquipment();
         } else {
             long departmentId = user.getDepartment().getId();
-            equipmentList = equipmentService.findFreeEquipmentOfDepartment(departmentId);
+            equipmentList = equipmentService.findEquipmentOfDepartment(departmentId);
         }
         model.addAttribute("equipmentList", equipmentList);
         return "selectEquipment";

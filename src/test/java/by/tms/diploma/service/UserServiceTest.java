@@ -32,4 +32,16 @@ class UserServiceTest {
         Optional<User> user = userService.saveUser(userDto);
         assertTrue(userRepository.existsByUsername(user.get().getUsername()));
     }
+
+    @Test
+    void deleteEmployee() {
+        Department department = new Department("Department");
+        departmentService.saveDepartment(department);
+        UserDto userDto1 = new UserDto("username1", "password1", "firstName1", "secondName1", department, Set.of(Role.HEAD_OF_DEPARTMENT));
+        Optional<User> user1 = userService.saveUser(userDto1);
+        UserDto userDto2 = new UserDto("username2", "password2", "firstName2", "secondName2", department, Set.of(Role.PRODUCTION_WORKER));
+        Optional<User> user2 = userService.saveUser(userDto2);
+        userService.deleteEmployee(user1.get().getId());
+        assertFalse(userRepository.existsByUsername(user1.get().getUsername()));
+    }
 }

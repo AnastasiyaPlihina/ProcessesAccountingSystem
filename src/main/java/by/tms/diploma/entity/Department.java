@@ -12,7 +12,7 @@ public class Department extends AbstractEntity {
     @NotBlank
     @Pattern(regexp = "[a-zA-Z]{3,16}")
     private String name;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<User> employees;
     @OneToMany
     private List<Equipment> equipmentList;
