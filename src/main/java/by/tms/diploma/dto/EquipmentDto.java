@@ -2,7 +2,6 @@ package by.tms.diploma.dto;
 
 import by.tms.diploma.entity.Department;
 import by.tms.diploma.entity.ObjectStatus;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
