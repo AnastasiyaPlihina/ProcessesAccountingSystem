@@ -17,6 +17,7 @@ public class User extends AbstractEntity implements UserDetails {
     @ManyToOne
     private Department department;
     @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_roles")
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
