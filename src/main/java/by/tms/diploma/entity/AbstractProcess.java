@@ -12,6 +12,7 @@ public abstract class AbstractProcess extends AbstractEntity {
     private LocalDateTime processStart;
     private LocalDateTime processEnd;
     @ManyToMany
+    @CollectionTable(name = "process_equipment")
     private List<Equipment> equipment;
     @ManyToOne
     private User employee;

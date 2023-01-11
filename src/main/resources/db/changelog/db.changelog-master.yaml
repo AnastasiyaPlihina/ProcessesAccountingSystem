@@ -11,3 +11,7 @@ databaseChangeLog:
       file: db/changelog/changeset/create-equipment-table.yaml
   - include:
       file: db/changelog/changeset/create-department-equipment-list-table.yaml
+  - include:
+      file: db/changelog/changeset/create-process-table.yaml
+  - include:
+      file: db/changelog/changeset/create-process-equipment-table.yaml

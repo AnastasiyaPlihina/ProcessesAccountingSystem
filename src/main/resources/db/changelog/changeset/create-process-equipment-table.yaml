@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-process-equipment
+      author: Anastasiya
+      changes:
+        - createTable:
+            tableName: process_equipment
+            columns:
+              - column:
+                  name: abstract_process_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: process_equipment_abstract_process_id_process_id
+                    references: process(id)
+              - column:
+                  name: equipment_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: process_equipment_equipment_id_equipment_id
+                    references: equipment(id)
