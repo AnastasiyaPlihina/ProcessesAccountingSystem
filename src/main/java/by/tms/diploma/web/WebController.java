@@ -36,7 +36,7 @@ public class WebController {
 
     @GetMapping
     public String startPage(Model model) {
-//        model.addAttribute("equipmentList", equipmentService.findAllEquipment());
+        model.addAttribute("equipmentList", equipmentService.findAllEquipment());
         return "index";
     }
 

@@ -1,5 +1,6 @@
 package by.tms.diploma.entity;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -13,8 +14,10 @@ public class Department extends AbstractEntity {
     @Pattern(regexp = "[a-zA-Z]{3,16}")
     private String name;
     @OneToMany(fetch = FetchType.EAGER)
+    @CollectionTable(name = "department_employees")
     private List<User> employees;
     @OneToMany
+    @CollectionTable(name = "department_equipment_list")
     private List<Equipment> equipmentList;
 
     public Department() {

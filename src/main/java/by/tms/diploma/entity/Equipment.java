@@ -1,9 +1,6 @@
 package by.tms.diploma.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 @Entity
 public class Equipment extends AbstractEntity {
@@ -13,6 +10,7 @@ public class Equipment extends AbstractEntity {
     private String inventoryNumber;
     private String technicalCharacteristic;
     @ManyToOne
+//    @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
     private LocalDate lastQualificationDate;
     private LocalDate lastMaintenanceServiceDate;

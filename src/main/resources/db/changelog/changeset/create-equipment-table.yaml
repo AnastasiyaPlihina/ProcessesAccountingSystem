@@ -1,0 +1,48 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-equipment
+      author: Anastasiya
+      changes:
+        - createTable:
+            tableName: equipment
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar (200)
+              - column:
+                  name: qr_code
+                  type: varchar (200)
+              - column:
+                  name: internal_code
+                  type: varchar (50)
+              - column:
+                  name: inventory_number
+                  type: varchar (50)
+              - column:
+                  name: technical_characteristic
+                  type: varchar (500)
+              - column:
+                  name: department_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: equipment_equipment_id_department_id
+                    references: department(id)
+              - column:
+                  name: last_qualification_date
+                  type: TIMESTAMP
+              - column:
+                  name: last_maintenance_service_date
+                  type: TIMESTAMP
+              - column:
+                  name: equipment_status
+                  type: varchar (50)
+              - column:
+                  name: is_process
+                  type: boolean
