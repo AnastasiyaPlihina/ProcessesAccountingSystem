@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@DiscriminatorValue("EQU")
+@DiscriminatorValue("EQ")
 public class Equipment extends AbstractControlObject {
     private LocalDate lastMaintenanceServiceDate;
     public Equipment() {
