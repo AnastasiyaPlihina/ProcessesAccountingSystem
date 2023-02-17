@@ -1,9 +1,11 @@
 package by.tms.diploma.service;
 
+import by.tms.diploma.entity.AbstractControlObject;
 import by.tms.diploma.entity.Department;
 import by.tms.diploma.entity.Equipment;
 import by.tms.diploma.exception.EquipmentNotFoundException;
 import by.tms.diploma.exception.SaveException;
+import by.tms.diploma.repository.ControlObjectRepository;
 import by.tms.diploma.repository.EquipmentRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,18 +20,18 @@ import java.util.Optional;
 public class EquipmentService {
     private static final Logger logger = LogManager.getLogger(EquipmentService.class);
 
-    private final EquipmentRepository equipmentRepository;
+    private final ControlObjectRepository controlObjectRepository;
 
     private final DepartmentService departmentService;
 
-    public EquipmentService(EquipmentRepository equipmentRepository, DepartmentService departmentService) {
-        this.equipmentRepository = equipmentRepository;
+    public EquipmentService(ControlObjectRepository controlObjectRepository, DepartmentService departmentService) {
+        this.controlObjectRepository = controlObjectRepository;
         this.departmentService = departmentService;
     }
 
     public Optional<Equipment> saveEquipment(Equipment equipment) {
-        if(!equipmentRepository.existsById(equipment.getId())) {
-            Equipment saveEquipment = equipmentRepository.save(equipment);
+        if(!controlObjectRepository.existsById(equipment.getId())) {
+            Equipment saveEquipment = controlObjectRepository.save(equipment);
             departmentService.updateDepartmentWithEquipment(saveEquipment.getDepartment().getId(), saveEquipment);
             logger.info("save equipment " + saveEquipment.getInternalCode());
             return Optional.of(saveEquipment);
@@ -38,8 +40,8 @@ public class EquipmentService {
         }
     }
     public Optional<Equipment> updateEquipment(Equipment equipment) {
-        if(equipmentRepository.existsById(equipment.getId())) {
-            Equipment updateEquipment = equipmentRepository.save(equipment);
+        if(controlObjectRepository.existsById(equipment.getId())) {
+            Equipment updateEquipment = controlObjectRepository.save(equipment);
             logger.info("update equipment " + updateEquipment.getInternalCode());
             return Optional.of(updateEquipment);
         } else {
@@ -48,12 +50,12 @@ public class EquipmentService {
     }
 
     public List<Equipment> findAllEquipment() {
-        return equipmentRepository.findAll();
+        return controlObjectRepository.findAllEquipment();
     }
 
 
     public Optional<Equipment> findEquipmentByQrCode(String equipmentQrCode) {
-        return equipmentRepository.findByQrCode(equipmentQrCode);
+        return controlObjectRepository.findEquipmentByQrCode(equipmentQrCode);
     }
 
     public List<Equipment> findEquipmentOfDepartment(long departmentId) {
@@ -61,7 +63,7 @@ public class EquipmentService {
         return departmentById.get().getEquipmentList();
     }
     public List<Equipment> findListOfInternalCodes(List<String> equipmentQrCodeList) {
-       return equipmentQrCodeList.stream().map(s -> equipmentRepository.findByQrCode(s).get()).toList();
+       return equipmentQrCodeList.stream().map(s -> controlObjectRepository.findEquipmentByQrCode(s).get()).toList();
     }
 
     public List<Equipment> findFreeEquipmentOfDepartment(long departmentId) {
@@ -70,8 +72,8 @@ public class EquipmentService {
     }
 
     public void deleteEquipment(long id) {
-        Optional<Equipment> equipmentById = equipmentRepository.findById(id);
-        equipmentRepository.deleteById(id);
+        Optional<AbstractControlObject> equipmentById = controlObjectRepository.findById(id);
+        controlObjectRepository.deleteById(id);
         Department department = equipmentById.get().getDepartment();
         department.getEquipmentList().remove(equipmentById.get());
         departmentService.updateDepartment(department);

@@ -30,12 +30,11 @@ public class EquipmentDto {
     @NotNull
     private String lastMaintenanceServiceDate;
     @NotNull
-    private ObjectStatus equipmentStatus;
+    private ObjectStatus objectStatus;
     public EquipmentDto() {
     }
 
-    public EquipmentDto(String name, String qrCode, String internalCode, String inventoryNumber, String technicalCharacteristic, Department department,
-                        String lastQualificationDate, String lastMaintenanceServiceDate, ObjectStatus equipmentStatus) {
+    public EquipmentDto(String name, String qrCode, String internalCode, String inventoryNumber, String technicalCharacteristic, Department department, String lastQualificationDate, String lastMaintenanceServiceDate, ObjectStatus objectStatus) {
         this.name = name;
         this.qrCode = qrCode;
         this.internalCode = internalCode;
@@ -44,7 +43,7 @@ public class EquipmentDto {
         this.department = department;
         this.lastQualificationDate = lastQualificationDate;
         this.lastMaintenanceServiceDate = lastMaintenanceServiceDate;
-        this.equipmentStatus = equipmentStatus;
+        this.objectStatus = objectStatus;
     }
 
     public String getName() {
@@ -111,11 +110,11 @@ public class EquipmentDto {
         this.lastMaintenanceServiceDate = lastMaintenanceServiceDate;
     }
 
-    public ObjectStatus getEquipmentStatus() {
-        return equipmentStatus;
+    public ObjectStatus getObjectStatus() {
+        return objectStatus;
     }
 
-    public void setEquipmentStatus(ObjectStatus equipmentStatus) {
-        this.equipmentStatus = equipmentStatus;
+    public void setObjectStatus(ObjectStatus objectStatus) {
+        this.objectStatus = objectStatus;
     }
 }

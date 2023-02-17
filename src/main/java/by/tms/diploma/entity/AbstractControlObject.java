@@ -15,20 +15,20 @@ public abstract class AbstractControlObject extends AbstractEntity {
     private Department department;
     private LocalDate lastQualificationDate;
     @Enumerated(EnumType.STRING)
-    private ObjectStatus status;
+    private ObjectStatus objectStatus;
     private boolean isProcess;
 
     public AbstractControlObject() {
     }
 
-    public AbstractControlObject(String name, String qrCode, String internalCode, String technicalCharacteristic, Department department, LocalDate lastQualificationDate, ObjectStatus status, boolean isProcess) {
+    public AbstractControlObject(String name, String qrCode, String internalCode, String technicalCharacteristic, Department department, LocalDate lastQualificationDate, ObjectStatus objectStatus, boolean isProcess) {
         this.name = name;
         this.qrCode = qrCode;
         this.internalCode = internalCode;
         this.technicalCharacteristic = technicalCharacteristic;
         this.department = department;
         this.lastQualificationDate = lastQualificationDate;
-        this.status = status;
+        this.objectStatus = objectStatus;
         this.isProcess = isProcess;
     }
 
@@ -80,12 +80,12 @@ public abstract class AbstractControlObject extends AbstractEntity {
         this.lastQualificationDate = lastQualificationDate;
     }
 
-    public ObjectStatus getStatus() {
-        return status;
+    public ObjectStatus getObjectStatus() {
+        return objectStatus;
     }
 
-    public void setStatus(ObjectStatus status) {
-        this.status = status;
+    public void setObjectStatus(ObjectStatus objectStatus) {
+        this.objectStatus = objectStatus;
     }
 
     public boolean isProcess() {

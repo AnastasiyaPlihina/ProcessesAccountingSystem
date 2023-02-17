@@ -73,8 +73,8 @@
                     <p th:if="${#fields.hasErrors('lastMaintenanceServiceDate')}" th:errors="*{lastMaintenanceServiceDate}"></p>
                 </div>
                 <div class="mb-3">
-                    <label for="roleSelect">Select equipment's status: </label>
-                    <select class="form-select" id="roleSelect" th:field="*{equipmentStatus}">
+                    <label for="statusSelect">Select equipment's status: </label>
+                    <select class="form-select" id="statusSelect" th:field="*{objectStatus}">
                         <option th:value="${T(by.tms.diploma.entity.ObjectStatus).ACTIVE}">Active</option>
                         <option th:value="${T(by.tms.diploma.entity.ObjectStatus).DECOMMISSIONED}">Decommissioned
                         </option>
